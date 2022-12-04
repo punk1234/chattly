@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -8,6 +9,7 @@ import express, { Application } from "express";
 
 import C from "./constants";
 import config from "./config";
+import RouteManager from "./routes";
 import { errorHandler } from "./middlewares";
 import { BadRequestError } from "./exceptions";
 import { Logger, LoggerStream } from "./helpers";
@@ -90,8 +92,7 @@ export default class App {
     this.engine.use(express.urlencoded({ limit: requestSizeLimit, extended: urlEncodeExtended }));
     this.engine.use(morgan("combined", { stream: LoggerStream }));
 
-    // REPLACE WITH RouterManager.installRoutes METHOD
-    // this.installRoutes();
+    RouteManager.installRoutes(this.engine);
 
     this.engine.use(errorHandler(errorOption?.includeStackTrace || !this.inProduction));
   }

@@ -50,6 +50,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.5",
     "morgan": "^1.10.0",
+    "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",
     "winston": "^3.8.2",
     "winston-daily-rotate-file": "^4.7.1"

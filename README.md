@@ -49,3 +49,4 @@ Chat app that includes both front-end & back-end implementation
 
 ## IMPROVEMENTS
 - Store UUID values in BINARY for performance gain on the long run. Storing only string uses 36 chars while BINARY can use 16BYTES since `-` will be stripped off
+- Include stack-trace errors for all environment excluding PRODUCTION
