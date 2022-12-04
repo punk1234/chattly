@@ -56,8 +56,8 @@ export default class App {
    */
   checkDependencies(): void {
     if (!MongoDbConnector.getClient()) {
-        throw new Error("Initialize DB!!!");
-      }
+      throw new Error("Initialize DB!!!");
+    }
   }
 
   /**
