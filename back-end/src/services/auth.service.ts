@@ -1,13 +1,13 @@
 import C from "../constants";
+import config from "../config";
+import { JwtHelper } from "../helpers";
 import { Inject, Service } from "typedi";
 import { UserService } from "./user.service";
-import { LoginDto, LoginResponse, RegisterUserDto, User } from "../models";
-import { BadRequestError, UnauthenticatedError } from "../exceptions";
-import { UserIdentifier } from "../constants/user-identifier.const";
-import { JwtHelper, PasswordHasher } from "../helpers";
 import { IAuthTokenPayload } from "../interfaces";
 import { IUser } from "../database/types/user.type";
-import config from "../config";
+import { UserIdentifier } from "../constants/user-identifier.const";
+import { LoginDto, LoginResponse, RegisterUserDto } from "../models";
+import { BadRequestError, UnauthenticatedError } from "../exceptions";
 
 @Service()
 export class AuthService {
@@ -25,7 +25,7 @@ export class AuthService {
 
     return this.userService.createUser(data);
   }
-  
+
   /**
    * @method login
    * @async
@@ -33,13 +33,10 @@ export class AuthService {
    * @returns {Promise<LoginResponse>}
    */
   async login(data: LoginDto): Promise<LoginResponse> {
-    const ID_KEY = this.checkThatOnlyOneUserIdIsGivenForLoginAndGetIdKey(
-      data.username,
-      data.email
-    );
+    const ID_KEY = this.checkThatOnlyOneUserIdIsGivenForLoginAndGetIdKey(data.username, data.email);
 
-    const ID_VALUE = data[ID_KEY as ("username" | "password")] as string;
-    let USER = await this.checkThatUserExistByIdentifierForLogin(ID_KEY, ID_VALUE);
+    const ID_VALUE = data[ID_KEY as "username" | "password"] as string;
+    const USER = await this.checkThatUserExistByIdentifierForLogin(ID_KEY, ID_VALUE);
 
     this.userService.checkThatUserIsActive(USER);
     this.userService.checkThatPasswordsMatch(data.password, USER.password as string);
@@ -52,26 +49,29 @@ export class AuthService {
     USER.password = undefined;
 
     return {
-        user: USER,
-        token: AUTH_TOKEN
-    } as LoginResponse
+      user: USER,
+      token: AUTH_TOKEN,
+    } as LoginResponse;
   }
 
   /**
    * @method checkThatOnlyOneUserIdIsGivenForLoginAndGetIdKey
    * @instance
-   * @param {string} username 
-   * @param {string} email 
+   * @param {string} username
+   * @param {string} email
    * @returns {UserIdentifier}
    */
-  private checkThatOnlyOneUserIdIsGivenForLoginAndGetIdKey(username?: string, email?: string): UserIdentifier {
-    if(username !== undefined && email !== undefined) {
+  private checkThatOnlyOneUserIdIsGivenForLoginAndGetIdKey(
+    username?: string,
+    email?: string,
+  ): UserIdentifier {
+    if (username !== undefined && email !== undefined) {
       throw new BadRequestError("Only one of `username` and `email` should be provided!");
     }
 
-    if(username) {
-       return C.UserIdentifier.USERNAME;
-    } else if(email) {
+    if (username) {
+      return C.UserIdentifier.USERNAME;
+    } else if (email) {
       return C.UserIdentifier.EMAIL;
     }
 
@@ -81,14 +81,14 @@ export class AuthService {
   /**
    * @method generateUserAuthTokenPayload
    * @instance
-   * @param {IUser} user 
+   * @param {IUser} user
    * @returns {IAuthTokenPayload}
    */
   private generateUserAuthTokenPayload(user: IUser): IAuthTokenPayload {
     return {
       userId: user._id,
-      role: user.role
-    }
+      role: user.role,
+    };
   }
 
   /**
@@ -98,7 +98,10 @@ export class AuthService {
    * @param {string} value
    * @returns {Promise<IUser>}
    */
-  private async checkThatUserExistByIdentifierForLogin(idKey: string, value: string): Promise<IUser> {
+  private async checkThatUserExistByIdentifierForLogin(
+    idKey: string,
+    value: string,
+  ): Promise<IUser> {
     const foundUser = await this.userService.getUserByIdentifier(idKey, value);
 
     if (foundUser) {

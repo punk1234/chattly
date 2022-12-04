@@ -1,10 +1,15 @@
 import C from "../constants";
 import { Service } from "typedi";
 import { PasswordHasher } from "../helpers";
-import { RegisterUserDto, User } from "../models";
+import { RegisterUserDto } from "../models";
 import { IUser } from "../database/types/user.type";
 import UserModel from "../database/models/user.model";
-import { ConflictError, NotFoundError, UnauthenticatedError, UnprocessableError } from "../exceptions";
+import {
+  ConflictError,
+  NotFoundError,
+  UnauthenticatedError,
+  UnprocessableError,
+} from "../exceptions";
 
 @Service()
 export class UserService {
@@ -77,10 +82,10 @@ export class UserService {
   /**
    * @method checkThatUserIsActive
    * @instance
-   * @param {IUser} user 
+   * @param {IUser} user
    */
   checkThatUserIsActive(user: IUser): void {
-    if(!user.active) {
+    if (!user.active) {
       throw new UnprocessableError("User account has been disabled!");
     }
   }
@@ -89,13 +94,13 @@ export class UserService {
    * @method checkThatPasswordsMatch
    * @instance
    * @param {string} plainTextPassword
-   * @param {string} passwordHash 
+   * @param {string} passwordHash
    */
   checkThatPasswordsMatch(plainTextPassword: string, passwordHash: string): void {
     const VALID_PASSWORD = PasswordHasher.verify(plainTextPassword, passwordHash);
 
-    if(!VALID_PASSWORD) {
-      throw new UnauthenticatedError(C.ResponseMessage.ERR_INVALID_CREDENTIALS)
+    if (!VALID_PASSWORD) {
+      throw new UnauthenticatedError(C.ResponseMessage.ERR_INVALID_CREDENTIALS);
     }
   }
 
