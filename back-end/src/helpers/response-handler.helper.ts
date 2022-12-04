@@ -20,7 +20,6 @@ export class ResponseHandler {
     data?: object,
     message: string = C.ResponseMessage.SUCCESS,
   ) {
-    console.log("GOOD!!! - " + data);
     return res.status(statusCode).json(data || { message });
   }
 
