@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/akejufatai/Documents/codebase/mine/chattly/back-end/logs/.f3330fb0e27861d15ef12c99e0de56fe47fd15c5-audit.json",
+    "files": [
+        {
+            "date": 1670155290298,
+            "name": "/Users/akejufatai/Documents/codebase/mine/chattly/back-end/logs/application-2022-12-04.log",
+            "hash": "803f8e3ec2769dcbdb56bc1c93d61542985450da23dd4ed29719206cf71e3c4a"
+        }
+    ],
+    "hashType": "sha256"
+}
