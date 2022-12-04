@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { Role } from "../../models";
 import { model, Schema } from "mongoose";
-import { IUser } from "../../interfaces";
+import { IUser } from "../types/user.type";
 
 const UserSchema = new Schema(
   {
