@@ -9,8 +9,8 @@ import config from "./config";
 const main = async () => {
   const app = new App(express(), Number(config.PORT));
   await app.initialize();
-  app.checkDependencies();
 
+  app.checkDependencies();
   app.run();
 };
 

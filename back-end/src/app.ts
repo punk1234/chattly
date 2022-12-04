@@ -1,25 +1,31 @@
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import mongoose from "mongoose";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import express, { Application } from "express";
 
 import C from "./constants";
-import { IAppOptions } from "./interfaces";
+import config from "./config";
 import { errorHandler } from "./middlewares";
 import { BadRequestError } from "./exceptions";
 import { Logger, LoggerStream } from "./helpers";
+import { IAppOptions, IDatabaseConnector } from "./interfaces";
+import MongoDbConnector from "./database/connectors/mongodb.connector";
 
 /**
  * @class App
  */
 export default class App {
   readonly engine: Application;
-  protected readonly port: number;
+  readonly port: number;
   readonly inProduction: boolean;
-  protected options: IAppOptions;
-  protected connection: any;
+
+  options: IAppOptions;
+  connection: any;
+
+  protected mongoConnector!: IDatabaseConnector;
 
   /**
    * @constructor
@@ -40,7 +46,8 @@ export default class App {
    * @async
    */
   private async setupDependencies(): Promise<void> {
-    // TODO: IMPLEMENTATION GOES HERE
+    this.mongoConnector = new MongoDbConnector(mongoose);
+    await this.mongoConnector.connect(config.MONGODB_URL);
   }
 
   /**
@@ -48,7 +55,9 @@ export default class App {
    * @instance
    */
   checkDependencies(): void {
-    // TODO: IMPLEMENTATION GOES HERE
+    if (!MongoDbConnector.getClient()) {
+      throw new Error("Initialize DB!!!");
+    }
   }
 
   /**
