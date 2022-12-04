@@ -11,7 +11,7 @@ Chat app that includes both front-end & back-end implementation
 - React
 - Redis (COMING SOON)
 
-## FUNCTIONAL REQUIREMENT
+## FUNCTIONAL REQUIREMENT 
 - User Account Creation
 - User Account Login
 - User Account Logout
@@ -21,6 +21,7 @@ Chat app that includes both front-end & back-end implementation
 - Get User Profile
 - Upload Profile Pix
 - Update User Profile (user display name)
+- Single Chat Connect (with optional message)
 - Get Chats
 - Send Chat Message
 - Real-time Chat Communication (with WEB-SOCKET)
@@ -30,6 +31,8 @@ Chat app that includes both front-end & back-end implementation
 - Remove Group Chat Members
 - Leave Group Chat
 - Get User Chat Groups
+- Scheduled Message (like submit message to be delivered at a particular date-time or delay in seconds)
+- Chat ticks implementation (for SENT, DELIVERED, RECEIVED)
 - Account Email Verification (using SendGrid)
 - Delete Chat Message (low priority)
 
