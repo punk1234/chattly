@@ -1,9 +1,15 @@
+import C from "../constants";
 import { Service } from "typedi";
-import { IUser } from "../interfaces";
 import { PasswordHasher } from "../helpers";
 import { RegisterUserDto } from "../models";
-import { ConflictError } from "../exceptions";
+import { IUser } from "../database/types/user.type";
 import UserModel from "../database/models/user.model";
+import {
+  ConflictError,
+  NotFoundError,
+  UnauthenticatedError,
+  UnprocessableError,
+} from "../exceptions";
 
 @Service()
 export class UserService {
@@ -43,5 +49,69 @@ export class UserService {
     if (foundUser) {
       throw new ConflictError("User already exist!");
     }
+  }
+
+  /**
+   * @method getUserByIdentifier
+   * @async
+   * @param {string} identifierKey
+   * @param {string} value
+   * @returns {Promise<IUser>}
+   */
+  async getUserByIdentifier(identifierKey: string, value: string): Promise<IUser | null> {
+    return UserModel.findOne({ [identifierKey]: value });
+  }
+
+  /**
+   * @method checkThatUserExistByIdentifier
+   * @async
+   * @param {string} identifierKey
+   * @param {string} value
+   * @returns {Promise<IUser>}
+   */
+  async checkThatUserExistByIdentifier(identifierKey: string, value: string): Promise<IUser> {
+    const foundUser = await UserModel.findOne({ [identifierKey]: value });
+
+    if (foundUser) {
+      return foundUser;
+    }
+
+    throw new NotFoundError("User not found!");
+  }
+
+  /**
+   * @method checkThatUserIsActive
+   * @instance
+   * @param {IUser} user
+   */
+  checkThatUserIsActive(user: IUser): void {
+    if (!user.active) {
+      throw new UnprocessableError("User account has been disabled!");
+    }
+  }
+
+  /**
+   * @method checkThatPasswordsMatch
+   * @instance
+   * @param {string} plainTextPassword
+   * @param {string} passwordHash
+   */
+  checkThatPasswordsMatch(plainTextPassword: string, passwordHash: string): void {
+    const VALID_PASSWORD = PasswordHasher.verify(plainTextPassword, passwordHash);
+
+    if (!VALID_PASSWORD) {
+      throw new UnauthenticatedError(C.ResponseMessage.ERR_INVALID_CREDENTIALS);
+    }
+  }
+
+  /**
+   * @method updateLastLoginAt
+   * @async
+   * @param {IUser} user
+   * @returns {IUser}
+   */
+  async updateLastLoginAt(user: IUser): Promise<IUser> {
+    user.lastLoginAt = new Date();
+    return user.save();
   }
 }
