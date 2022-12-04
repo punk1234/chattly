@@ -19,7 +19,8 @@ export class ResponseHandler {
     statusCode: HttpStatusCode,
     data?: object,
     message: string = C.ResponseMessage.SUCCESS,
-  ) {console.log("GOOD!!! - " + data)
+  ) {
+    console.log("GOOD!!! - " + data);
     return res.status(statusCode).json(data || { message });
   }
 

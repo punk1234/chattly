@@ -12,12 +12,11 @@ import { Request, Response, NextFunction } from "express";
 const handleThrownErrorResponse = (includeStackTrace: boolean) => {
   return (err: any, _req: Request, res: Response, _next: NextFunction) => {
     if (err instanceof CustomError) {
-
       return ResponseHandler.send(
-        res, 
-        err.statusCode, 
+        res,
+        err.statusCode,
         includeStackTrace ? { message: err.message, error: err?.stack } : undefined,
-        err.message
+        err.message,
       );
     }
 
@@ -27,7 +26,7 @@ const handleThrownErrorResponse = (includeStackTrace: boolean) => {
 
       // NOTE: CAN ALSO USE `{}` BELOW, BUT NO NEED TO CREATE MEMORY FOR EMPTY OBJECT
       includeStackTrace ? { message: err.message, error: err?.stack } : undefined,
-      
+
       err.message,
     );
   };
