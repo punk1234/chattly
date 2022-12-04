@@ -14,13 +14,20 @@ import { Logger, LoggerStream } from "./helpers";
 /**
  * @class App
  */
-export abstract class App {
+export default class App {
   readonly engine: Application;
   protected readonly port: number;
   readonly inProduction: boolean;
   protected options: IAppOptions;
   protected connection: any;
 
+  /**
+   * @constructor
+   *
+   * @param {Application} engine
+   * @param {number} port
+   * @param {IAppOptions} options
+   */
   constructor(engine: Application, port: number, options?: IAppOptions) {
     this.engine = engine;
     this.port = port;
@@ -28,10 +35,25 @@ export abstract class App {
     this.inProduction = process.env.NODE_ENV === C.Environment.PRODUCTION;
   }
 
-  protected abstract setupDependencies(): Promise<void>;
+  /**
+   * @method setupDependencies
+   * @async
+   */
+  private async setupDependencies(): Promise<void> {
+    // TODO: IMPLEMENTATION GOES HERE
+  }
 
-  protected abstract installRoutes(): void;
+  /**
+   * @method checkDependencies
+   * @instance
+   */
+  checkDependencies(): void {
+    // TODO: IMPLEMENTATION GOES HERE
+  }
 
+  /**
+   * @method configure
+   */
   protected configure(): void {
     const {
       urlEncodeExtended = true,
@@ -59,23 +81,34 @@ export abstract class App {
     this.engine.use(express.urlencoded({ limit: requestSizeLimit, extended: urlEncodeExtended }));
     this.engine.use(morgan("combined", { stream: LoggerStream }));
 
-    this.installRoutes();
+    // REPLACE WITH RouterManager.installRoutes METHOD
+    // this.installRoutes();
 
     this.engine.use(errorHandler(errorOption?.includeStackTrace || !this.inProduction));
   }
 
-  async initialize() {
+  /**
+   * @initialize
+   */
+  async initialize(): Promise<void> {
     await this.setupDependencies();
+
     this.configure();
   }
 
+  /**
+   * @method run
+   */
   run(): void {
     this.connection = this.engine.listen(this.port, () => {
       Logger.info(`App now running on port ${this.port}`);
     });
   }
 
-  close() {
+  /**
+   * @method close
+   */
+  close(): void {
     this.connection?.close();
   }
 }
