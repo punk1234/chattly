@@ -5,14 +5,19 @@ import { error } from "express-openapi-validator";
 import { Request, Response, NextFunction } from "express";
 
 /**
- * @function handleThrownErrorsResponse
+ * @function handleThrownErrorResponse
  * @param {boolean} includeStackTrace
  * @returns {Function}
  */
-const handleThrownErrorsResponse = (includeStackTrace: boolean) => {
+const handleThrownErrorResponse = (includeStackTrace: boolean) => {
   return (err: any, _req: Request, res: Response, _next: NextFunction) => {
     if (err instanceof CustomError) {
-      return ResponseHandler.send(res, err.statusCode, err.metaData, err.message);
+      return ResponseHandler.send(
+        res,
+        err.statusCode,
+        includeStackTrace ? { message: err.message, error: err?.stack } : undefined,
+        err.message,
+      );
     }
 
     return ResponseHandler.send(
@@ -20,7 +25,7 @@ const handleThrownErrorsResponse = (includeStackTrace: boolean) => {
       C.HttpStatusCode.SERVER_ERROR,
 
       // NOTE: CAN ALSO USE `{}` BELOW, BUT NO NEED TO CREATE MEMORY FOR EMPTY OBJECT
-      includeStackTrace ? err?.stack : undefined,
+      includeStackTrace ? { message: err.message, error: err?.stack } : undefined,
 
       err.message,
     );
@@ -53,6 +58,6 @@ export const errorHandler = (includeStackTrace: boolean) => {
       console.error(err?.stack);
     }
 
-    handleThrownErrorsResponse(includeStackTrace)(err, req, res, next);
+    handleThrownErrorResponse(includeStackTrace)(err, req, res, next);
   };
 };

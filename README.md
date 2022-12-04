@@ -34,7 +34,10 @@ Chat app that includes both front-end & back-end implementation
 - Scheduled Message (like submit message to be delivered at a particular date-time or delay in seconds)
 - Chat ticks implementation (for SENT, DELIVERED, RECEIVED)
 - Account Email Verification (using SendGrid)
+- HAVE A GENERAL CHAT GROUP SUCH THAT NEW USERS GET ADDED TO A PUBLIC GROUP & ADMIN CAN SEND MESSAGE TO EVERYONE THERE
 - Delete Chat Message (low priority)
+- Notfication settings
+- Seed SUPER-ADMIN
 
 ## ADMIN
 - Get Platform Stats (including no. of users, active-users, inactive-users, chat groups, total messages for today & yesterday, users that logged in today)
@@ -43,3 +46,7 @@ Chat app that includes both front-end & back-end implementation
 - Get Chat Groups
 - Configure chat group settings (like max no. of participants in a chat-group, max length of chat-group name max no. of chat-groups to be created per day)
 - OPTIONAL FEATURE : Create Public Chat Group (that will be visible to all users & ranked using the number of users joined)
+
+## IMPROVEMENTS
+- Store UUID values in BINARY for performance gain on the long run. Storing only string uses 36 chars while BINARY can use 16BYTES since `-` will be stripped off
+- Include stack-trace errors for all environment excluding PRODUCTION

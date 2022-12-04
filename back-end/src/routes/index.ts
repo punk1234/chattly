@@ -1,5 +1,6 @@
 import path from "path";
-import root from "./root.route";
+import rootRouter from "./root.route";
+import authRouter from "./auth.route";
 import { Application } from "express";
 import { apiRequestValidator, notFoundHandler } from "../middlewares";
 
@@ -15,10 +16,10 @@ export default class RouteManager {
    * @static
    * @param {Application} app
    */
-  static installRoutes(app: Application) {
-    app.use(root);
+  static installRoutes(app: Application): void {
+    app.use(rootRouter);
     app.use(apiRequestValidator(API_SPEC_PATH));
-    // app.use("/auth", authRouter);
+    app.use("/auth", authRouter);
     app.use(notFoundHandler);
   }
 }
