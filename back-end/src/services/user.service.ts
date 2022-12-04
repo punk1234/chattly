@@ -7,14 +7,10 @@ import UserModel from "../database/models/user.model";
 
 @Service()
 export class UserService {
-
-  // eslint-disable-next-line no-useless-constructor
-  constructor() {}
-
   /**
    * @method createUser
    * @async
-   * @param {RegisterUserDto} data 
+   * @param {RegisterUserDto} data
    * @returns {Promise<IUser>}
    */
   async createUser(data: RegisterUserDto): Promise<IUser> {
@@ -23,7 +19,7 @@ export class UserService {
     const USER = await new UserModel({
       ...data,
       password: PASSWORD_HASH,
-      chatDisplayName: data.username
+      chatDisplayName: data.username,
     }).save();
 
     delete USER.password;
@@ -33,17 +29,19 @@ export class UserService {
   /**
    * @method checkThatUserWithUsernameOrEmailDoesNotExist
    * @async
-   * @param {string} username 
-   * @param {string} email 
+   * @param {string} username
+   * @param {string} email
    */
-  async checkThatUserWithUsernameOrEmailDoesNotExist(username: string, email: string): Promise<void> {
+  async checkThatUserWithUsernameOrEmailDoesNotExist(
+    username: string,
+    email: string,
+  ): Promise<void> {
     const foundUser = await UserModel.findOne({
-      $or: [{ username }, { email }]
+      $or: [{ username }, { email }],
     });
 
-    if(foundUser) {
+    if (foundUser) {
       throw new ConflictError("User already exist!");
     }
   }
-
 }

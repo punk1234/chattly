@@ -31,21 +31,21 @@ const UserSchema = new Schema(
     role: {
       type: String,
       enum: Object.values(Role),
-      default: Role.USER
+      default: Role.USER,
     },
     imageUrl: {
-      type: String
+      type: String,
     },
     bio: {
       type: String,
     },
     active: {
       type: Boolean,
-      default: true
+      default: true,
     },
     lastLoginAt: {
-      type: Date
-    }
+      type: Date,
+    },
   },
   {
     timestamps: true,

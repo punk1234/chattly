@@ -1,7 +1,9 @@
 export default function () {
   return function <T extends { new (...args: any[]): any }>(target: T): T {
     return class extends target {
-      properties = Object.getOwnPropertyNames(target.prototype).filter((mN: string) => mN !== "constructor");
+      properties = Object.getOwnPropertyNames(target.prototype).filter(
+        (mN: string) => mN !== "constructor",
+      );
       constructor(...arg: any[]) {
         super(...arg);
 

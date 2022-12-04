@@ -5,9 +5,7 @@ import { RegisterUserDto, User } from "../models";
 @Service()
 export class AuthService {
   // eslint-disable-next-line no-useless-constructor
-  constructor(
-    @Inject() private userService: UserService,
-  ) {}
+  constructor(@Inject() private userService: UserService) {}
 
   /**
    * @method register
@@ -20,5 +18,4 @@ export class AuthService {
 
     return this.userService.createUser(data);
   }
-
 }
