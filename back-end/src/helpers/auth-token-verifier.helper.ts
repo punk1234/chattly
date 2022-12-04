@@ -1,4 +1,4 @@
-import { JwtHelper } from "./jwt-helper";
+import { JwtHelper } from "./jwt.helper";
 import { IAuthTokenPayload } from "../interfaces";
 import { UnauthenticatedError } from "../exceptions";
 
