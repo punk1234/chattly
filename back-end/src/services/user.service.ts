@@ -39,7 +39,7 @@ export class UserService {
    */
   async getUser(userId: string): Promise<IUser> {
     const USER = await this.checkThatUserExistByIdentifier(C.UserIdentifier.ID, userId);
-    
+
     USER.password = undefined;
     return USER;
   }
