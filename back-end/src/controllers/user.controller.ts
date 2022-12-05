@@ -17,7 +17,6 @@ export class UserController {
    * @param {Response} res
    */
   async getProfile(req: Request, res: Response) {
-    console.log(req.auth);
     const USER = await this.userService.getUser(req.auth?.userId as string);
 
     ResponseHandler.ok(res, USER);
