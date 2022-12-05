@@ -1,4 +1,5 @@
 import path from "path";
+import meRouter from "./me.route";
 import rootRouter from "./root.route";
 import authRouter from "./auth.route";
 import { Application } from "express";
@@ -20,6 +21,7 @@ export default class RouteManager {
     app.use(rootRouter);
     app.use(apiRequestValidator(API_SPEC_PATH));
     app.use("/auth", authRouter);
+    app.use("/me", meRouter);
     app.use(notFoundHandler);
   }
 }

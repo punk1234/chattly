@@ -22,13 +22,25 @@ export class UserService {
   async createUser(data: RegisterUserDto): Promise<IUser> {
     const PASSWORD_HASH: string = PasswordHasher.hash(data.password);
 
-    const USER = await new UserModel({
+    const USER = new UserModel({
       ...data,
       password: PASSWORD_HASH,
       chatDisplayName: data.username,
-    }).save();
+    });
 
-    delete USER.password;
+    return USER.save();
+  }
+
+  /**
+   * @method getUser
+   * @async
+   * @param {string} userId
+   * @returns {Promise<IUser>}
+   */
+  async getUser(userId: string): Promise<IUser> {
+    const USER = await this.checkThatUserExistByIdentifier(C.UserIdentifier.ID, userId);
+
+    USER.password = undefined;
     return USER;
   }
 
@@ -112,6 +124,7 @@ export class UserService {
    */
   async updateLastLoginAt(user: IUser): Promise<IUser> {
     user.lastLoginAt = new Date();
+
     return user.save();
   }
 }
