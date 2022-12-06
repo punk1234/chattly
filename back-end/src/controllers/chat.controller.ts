@@ -2,7 +2,6 @@ import { Inject, Service } from "typedi";
 import { Controller } from "../decorators";
 import { Request, Response } from "express";
 import { ResponseHandler } from "../helpers";
-import { UserService } from "../services/user.service";
 import { ChatService } from "../services/chat.service";
 import { CreateSingleChatConnectionDto, CreateSingleChatConnectionResponse, User } from "../models";
 
@@ -22,12 +21,12 @@ export class ChatController {
   async createSingleChatConnection(req: Request, res: Response) {
     const INITIATED_CONNECTION_RESPONSE = await this.chatService.createSingleChatConnection(
       req.auth?.userId as string,
-      req.body as CreateSingleChatConnectionDto
+      req.body as CreateSingleChatConnectionDto,
     );
 
     const RESPONSE: CreateSingleChatConnectionResponse = {
       chatMessage: INITIATED_CONNECTION_RESPONSE.initialChatMessage.content,
-      newConnectUser: INITIATED_CONNECTION_RESPONSE.connectUser as User
+      newConnectUser: INITIATED_CONNECTION_RESPONSE.connectUser as User,
     };
 
     // THINKING OF USING GENERICS HERE FOR CREATED SUCH THAT `CreateSingleChatConnectionResponse` IS USED

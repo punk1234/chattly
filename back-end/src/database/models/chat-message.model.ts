@@ -12,16 +12,17 @@ const ChatMessageSchema = new Schema(
     },
     senderId: {
       type: String,
-      required: true
+      required: true,
     },
     recipientId: {
       type: String,
-      required: true
+      required: true,
     },
-    recipientType: { // NOTE: REMOVE IF NOT NEEDED AS CONNECTION ALREADY HAS THIS
+    recipientType: {
+      // NOTE: REMOVE IF NOT NEEDED AS CONNECTION ALREADY HAS THIS
       type: String,
       enum: Object.values(ChatType),
-      required: true
+      required: true,
     },
     content: {
       type: String,
@@ -29,7 +30,7 @@ const ChatMessageSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now
+      default: Date.now,
     },
   },
   {

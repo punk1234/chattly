@@ -21,11 +21,11 @@ const ChatConnectionSchema = new Schema(
     connectTwoType: {
       type: String,
       enum: Object.values(ChatType),
-      required: true
+      required: true,
     },
     initiatedAt: {
       type: Date,
-      default: Date.now
+      default: Date.now,
     },
   },
   {
