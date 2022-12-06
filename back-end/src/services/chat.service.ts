@@ -13,7 +13,7 @@ export class ChatService {
   // eslint-disable-next-line no-useless-constructor
   constructor(
     @Inject() private readonly userService: UserService,
-    @Inject() private readonly chatMessageService: ChatMessageService
+    @Inject() private readonly chatMessageService: ChatMessageService,
   ) {}
 
   /**
@@ -27,7 +27,6 @@ export class ChatService {
     userId: string,
     data: CreateSingleChatConnectionDto,
   ): Promise<IInitiateConnectionResponse> {
-      
     const NEW_CONNECT_USER = await this.userService.checkThatUserExistByIdentifier(
       C.UserIdentifier.USERNAME,
       data.newConnectUsername,
@@ -57,9 +56,9 @@ export class ChatService {
   /**
    * @method createChatConnection
    * @async
-   * @param {string} initiatingUserId 
-   * @param {string} connectUserId 
-   * @param {string} chatType 
+   * @param {string} initiatingUserId
+   * @param {string} connectUserId
+   * @param {string} chatType
    * @returns {Promise<IChatConnection>}
    */
   private async createChatConnection(
@@ -77,8 +76,8 @@ export class ChatService {
   /**
    * @method checkThatSingleConnectionDoesNotExist
    * @async
-   * @param {string} connectOneId 
-   * @param {string} connectTwoId 
+   * @param {string} connectOneId
+   * @param {string} connectTwoId
    */
   private async checkThatSingleConnectionDoesNotExist(
     connectOneId: string,

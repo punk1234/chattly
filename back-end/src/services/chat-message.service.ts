@@ -5,14 +5,13 @@ import ChatMessageModel from "../database/models/chat-message.model";
 
 @Service()
 export class ChatMessageService {
-
   /**
    * @method saveChatMessage
    * @async
-   * @param {string} senderId 
-   * @param {string} recipientId 
-   * @param {ChatType} chatType 
-   * @param {string} content 
+   * @param {string} senderId
+   * @param {string} recipientId
+   * @param {ChatType} chatType
+   * @param {string} content
    * @returns {Promise<IChatMessage>}
    */
   async saveChatMessage(
@@ -28,5 +27,4 @@ export class ChatMessageService {
       content,
     }).save();
   }
-
 }
