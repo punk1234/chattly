@@ -102,9 +102,9 @@ paths:
 
   /me/single-chat/connection:
     post:
-      summary: "Create Single Chat Connection"
-      description: "Create Single Chat Connection"
-      operationId: createSingleChatConnection
+      summary: "Initiate Single Chat Connection"
+      description: "Initiate Single Chat Connection"
+      operationId: initiateSingleChatConnection
       x-visibility: "public"
       tags:
         - "chats"
@@ -113,14 +113,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateSingleChatConnectionDto"
+              $ref: "#/components/schemas/InitiateSingleChatConnectionDto"
       responses:
-        "201":
-          description: "Created"
+        "200":
+          description: "Success"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreateSingleChatConnectionResponse"
+                $ref: "#/components/schemas/InitiateSingleChatConnectionResponse"
         "400":
           $ref: "#/components/responses/InvalidRequest"
         "401":
