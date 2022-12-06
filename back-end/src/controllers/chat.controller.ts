@@ -12,14 +12,13 @@ export class ChatController {
   constructor(@Inject() private readonly chatService: ChatService) {}
 
   /**
-   * @method createSingleChatConnection
+   * @method initiateSingleChatConnection
    * @async
    * @param {Request} req
    * @param {Response} res
    */
-  // CHANGE NAME TO initiateSingleChatConnection & probably response should be `200`
-  async createSingleChatConnection(req: Request, res: Response) {
-    const INITIATED_CONNECTION_RESPONSE = await this.chatService.createSingleChatConnection(
+  async initiateSingleChatConnection(req: Request, res: Response) {
+    const INITIATED_CONNECTION_RESPONSE = await this.chatService.initiateSingleChatConnection(
       req.auth?.userId as string,
       req.body as CreateSingleChatConnectionDto,
     );
@@ -30,6 +29,6 @@ export class ChatController {
     };
 
     // THINKING OF USING GENERICS HERE FOR CREATED SUCH THAT `CreateSingleChatConnectionResponse` IS USED
-    ResponseHandler.created(res, RESPONSE);
+    ResponseHandler.ok(res, RESPONSE);
   }
 }

@@ -10,6 +10,6 @@ const chatController = Container.get(ChatController);
 
 router.get("/profile", requireAuth(), controller.getProfile);
 
-router.post("/single-chat/connection", requireAuth(), chatController.createSingleChatConnection);
+router.post("/single-chat/connection", requireAuth(), chatController.initiateSingleChatConnection);
 
 export default router;
