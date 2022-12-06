@@ -15,13 +15,13 @@ export class ChatService {
   constructor(@Inject() private readonly userService: UserService) {}
 
   /**
-   * @method createSingleChatConnection
+   * @method initiateSingleChatConnection
    * @async
    * @param {string} userId
    * @param {CreateSingleChatConnectionDto} data
-   * @returns {Promise<CreateSingleChatConnectionResponse>}
+   * @returns {Promise<IInitiateConnectionResponse>}
    */
-  async createSingleChatConnection(
+  async initiateSingleChatConnection(
     userId: string,
     data: CreateSingleChatConnectionDto,
   ): Promise<IInitiateConnectionResponse> {
@@ -37,7 +37,7 @@ export class ChatService {
     await this.checkThatSingleConnectionDoesNotExist(userId, NEW_CONNECT_USER._id);
     await this.createChatConnection(userId, NEW_CONNECT_USER._id, ChatType.S);
 
-    // NOTE: Might not be best if username changes in future, but not changing for now
+    // NOTE: MIGHT NOT BE THE BEST IF `username` CHANGES IN FUTURE, BUT NOT CHANGING FOR NOW
     const CHAT_MESSAGE = await this.saveChatMessage(
       userId,
       NEW_CONNECT_USER._id,
