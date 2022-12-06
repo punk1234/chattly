@@ -1,18 +1,20 @@
 import C from "../constants";
 import { Inject, Service } from "typedi";
-import { ChatType, CreateSingleChatConnectionDto } from "../models";
-import { ConflictError, UnprocessableError } from "../exceptions";
 import { UserService } from "./user.service";
-import ChatConnectionModel from "../database/models/chat-connection.model";
-import { IChatConnection } from "../database/types/chat-connection.type";
-import { IChatMessage } from "../database/types/chat-message.type";
-import ChatMessageModel from "../database/models/chat-message.model";
 import { IInitiateConnectionResponse } from "../interfaces";
+import { ChatMessageService } from "./chat-message.service";
+import { ConflictError, UnprocessableError } from "../exceptions";
+import { ChatType, CreateSingleChatConnectionDto } from "../models";
+import { IChatConnection } from "../database/types/chat-connection.type";
+import ChatConnectionModel from "../database/models/chat-connection.model";
 
 @Service()
 export class ChatService {
   // eslint-disable-next-line no-useless-constructor
-  constructor(@Inject() private readonly userService: UserService) {}
+  constructor(
+    @Inject() private readonly userService: UserService,
+    @Inject() private readonly chatMessageService: ChatMessageService,
+  ) {}
 
   /**
    * @method initiateSingleChatConnection
@@ -38,7 +40,7 @@ export class ChatService {
     await this.createChatConnection(userId, NEW_CONNECT_USER._id, ChatType.S);
 
     // NOTE: MIGHT NOT BE THE BEST IF `username` CHANGES IN FUTURE, BUT NOT CHANGING FOR NOW
-    const CHAT_MESSAGE = await this.saveChatMessage(
+    const CHAT_MESSAGE = await this.chatMessageService.saveChatMessage(
       userId,
       NEW_CONNECT_USER._id,
       ChatType.S,
@@ -51,20 +53,14 @@ export class ChatService {
     };
   }
 
-  private async saveChatMessage(
-    senderId: string,
-    recipientId: string,
-    chatType: ChatType,
-    content: string,
-  ): Promise<IChatMessage> {
-    return new ChatMessageModel({
-      senderId,
-      recipientId,
-      recipientType: chatType,
-      content,
-    }).save();
-  }
-
+  /**
+   * @method createChatConnection
+   * @async
+   * @param {string} initiatingUserId
+   * @param {string} connectUserId
+   * @param {string} chatType
+   * @returns {Promise<IChatConnection>}
+   */
   private async createChatConnection(
     initiatingUserId: string,
     connectUserId: string,
@@ -77,6 +73,12 @@ export class ChatService {
     }).save();
   }
 
+  /**
+   * @method checkThatSingleConnectionDoesNotExist
+   * @async
+   * @param {string} connectOneId
+   * @param {string} connectTwoId
+   */
   private async checkThatSingleConnectionDoesNotExist(
     connectOneId: string,
     connectTwoId: string,
