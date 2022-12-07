@@ -87,6 +87,7 @@ export class AuthService {
   private generateUserAuthTokenPayload(user: IUser): IAuthTokenPayload {
     return {
       userId: user._id,
+      username: user.username,
       role: user.role,
     };
   }
