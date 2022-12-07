@@ -179,6 +179,8 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/AccessDenied"
+        "409":
+          $ref: "#/components/responses/ConflictError"
         "default":
           $ref: "#/components/responses/ServerError"
 
@@ -201,6 +203,41 @@ paths:
           $ref: "#/components/responses/InvalidRequest"
         "401":
           $ref: "#/components/responses/Unauthorized"
+        "default":
+          $ref: "#/components/responses/ServerError"
+
+  /me/group-chats/{groupChatId}:
+    parameters:
+      - $ref: "#/components/parameters/groupChatIdParam"
+
+    patch:
+      summary: "Update Group Chat"
+      description: "Update Group Chat"
+      operationId: updateGroupChat
+      x-visibility: "public"
+      tags:
+        - "chats"
+      security: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGroupChatDto"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupChat"
+        "400":
+          $ref: "#/components/responses/InvalidRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "409":
+          $ref: "#/components/responses/ConflictError"
         "default":
           $ref: "#/components/responses/ServerError"
 
@@ -418,7 +455,7 @@ components:
 
     CreateGroupChatDto:
       type: "object"
-      description: "Create group-char request data"
+      description: "Create group-chat request data"
       required:
         - "name"
         - "members"
@@ -443,6 +480,21 @@ components:
           type: "string"
           minLength: 1
           description: "Optional chat message. A default `greeting` message will be sent if not provided"
+
+    UpdateGroupChatDto:
+      type: "object"
+      description: "Update group-chat request data"
+      minProperties: 1
+      properties:
+        name:
+          type: "string"
+          minLength: 2
+        description:
+          type: "string"
+        image:
+          type: "string"
+          format: "binary"
+          description: "Group chat display image"
 
     SendChatMessageDto:
       type: "object"

@@ -40,7 +40,7 @@ export class ChatGroupService {
       userId,
       GROUP_CHAT._id,
       ChatType.G,
-      "HI EVERYONE & WELCOME!!!",
+      data.initialChatMessage || "HI EVERYONE & WELCOME!!!",
     );
 
     return GROUP_CHAT;
