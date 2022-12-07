@@ -18,7 +18,7 @@ export class AuthService {
    * @method register
    * @async
    * @param {RegisterUserDto} data
-   * @returns {Promise<User>}
+   * @returns {Promise<IUser>}
    */
   async register(data: RegisterUserDto): Promise<IUser> {
     await this.userService.checkThatUserWithUsernameOrEmailDoesNotExist(data.username, data.email);
@@ -52,6 +52,17 @@ export class AuthService {
       user: USER,
       token: AUTH_TOKEN,
     } as LoginResponse;
+  }
+
+  /**
+   * @method logout
+   * @async
+   * @param {string} userId
+   * @returns {Promise<void>}
+   */
+  async logout(userId: string): Promise<void> {
+    // NOTE: TO BE IMPLEMENTED LATER (SESSIONS WILL NEED TO BE MANAGED FOR THIS)
+    // USER SESSION WILL GET DESTROYED
   }
 
   /**
