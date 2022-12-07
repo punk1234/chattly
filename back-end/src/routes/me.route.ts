@@ -12,4 +12,6 @@ router.get("/profile", requireAuth(), controller.getProfile);
 
 router.post("/single-chat/connection", requireAuth(), chatController.initiateSingleChatConnection);
 
+router.post("/group-chats", requireAuth(), chatController.createGroupChat);
+
 export default router;

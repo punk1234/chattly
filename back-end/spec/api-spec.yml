@@ -401,7 +401,7 @@ components:
           type: "string"
           description: "User biography (information about user)"
 
-    CreateSingleChatConnectionDto:
+    InitiateSingleChatConnectionDto:
       type: "object"
       additionalProperties: false
       required:
@@ -541,7 +541,7 @@ components:
           type: "string"
           format: "date-time"
 
-    CreateSingleChatConnectionResponse:
+    InitiateSingleChatConnectionResponse:
       type: "object"
       description: "Response object for chat-connection created"
       required:
@@ -568,6 +568,10 @@ components:
           type: "string"
           format: "url"
           description: "Image url for group-chat"
+        createdBy:
+          type: "string"
+          format: "uuid"
+          description: "User who created the group-chat"
 
     SingleChatConnectionsResponse:
       type: "object"

@@ -97,4 +97,33 @@ export class ChatService {
       throw new ConflictError("Single chat connection already exist!");
     }
   }
+
+  async getGroupChatConnections(
+    chatGroupId: string,
+    usernames: Array<string>,
+  ): Promise<Array<IChatConnection>> {
+    const FOUND_CONNECTIONS = await ChatConnectionModel.find({
+      connectOne: { $in: usernames },
+      connectTwo: chatGroupId,
+      connectTwoType: ChatType.G,
+    }).select("connectOne -_id");
+
+    return FOUND_CONNECTIONS;
+  }
+
+  async bulkAddGroupChatMembers(
+    groupChatId: string,
+    membersUsernames: Array<string>,
+  ): Promise<void> {
+    const CONNECTIONS_DATA = membersUsernames.map(
+      (username: string) =>
+        new ChatConnectionModel({
+          connectOne: username,
+          connectTwo: groupChatId,
+          connectTwoType: ChatType.G,
+        }),
+    );
+
+    await ChatConnectionModel.bulkSave(CONNECTIONS_DATA);
+  }
 }
