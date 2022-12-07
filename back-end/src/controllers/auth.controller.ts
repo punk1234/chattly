@@ -34,4 +34,16 @@ export class AuthController {
 
     ResponseHandler.ok(res, loginResponse);
   }
+
+  /**
+   * @method logout
+   * @async
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async logout(req: Request, res: Response) {
+    await this.authService.logout(req.auth?.userId as string);
+
+    ResponseHandler.ok(res, { success: true });
+  }
 }
