@@ -52,3 +52,5 @@ Chat app that includes both front-end & back-end implementation
 - Include stack-trace errors for all environment excluding PRODUCTION
 - Allow users change fonts for chats - about 3 different options
 - Different themes
+- Activate/De-activiate Chat-group or delete
+- Figure out any concurrency issue that might exist

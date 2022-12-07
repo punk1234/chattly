@@ -3,13 +3,17 @@ import { Controller } from "../decorators";
 import { Request, Response } from "express";
 import { ResponseHandler } from "../helpers";
 import { ChatService } from "../services/chat.service";
-import { CreateSingleChatConnectionDto, CreateSingleChatConnectionResponse, User } from "../models";
+import { CreateGroupChatDto, CreateSingleChatConnectionDto, CreateSingleChatConnectionResponse, User } from "../models";
+import { ChatGroupService } from "../services/group-chat.service";
 
 @Service()
 @Controller()
 export class ChatController {
   // eslint-disable-next-line no-useless-constructor
-  constructor(@Inject() private readonly chatService: ChatService) {}
+  constructor(
+    @Inject() private readonly chatService: ChatService,
+    @Inject() private readonly chatGroupService: ChatGroupService
+  ) {}
 
   /**
    * @method initiateSingleChatConnection
@@ -30,5 +34,20 @@ export class ChatController {
 
     // THINKING OF USING GENERICS HERE FOR CREATED SUCH THAT `CreateSingleChatConnectionResponse` IS USED
     ResponseHandler.ok(res, RESPONSE);
+  }
+
+  /**
+   * @method createGroupChat
+   * @async
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async createGroupChat(req: Request, res: Response) {
+    const GROUP_CHAT = await this.chatGroupService.create(
+      req.auth?.userId as string,
+      req.body as CreateGroupChatDto,
+    );
+
+    ResponseHandler.created(res, GROUP_CHAT);
   }
 }

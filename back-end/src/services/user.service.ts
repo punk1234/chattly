@@ -116,6 +116,15 @@ export class UserService {
     }
   }
 
+  async checkThatUsernamesExists(usernames: Array<string>): Promise<void> {
+    // NOTE: IS THERE A NEED TO REMOVE `__v` SUCH THAT ONLY INDEX IS USED FOR THIS CALCULATION
+    const USERS = await UserModel.find({ username: { $in: usernames } }).select("username -_id");
+
+    if(USERS.length !== usernames.length) {
+      throw new NotFoundError("One or more username(s) does not exist!");
+    }
+  }
+
   /**
    * @method updateLastLoginAt
    * @async
