@@ -5,5 +5,6 @@ import { Role } from "../models";
  */
 export interface IAuthTokenPayload {
   userId: string;
+  username: string;
   role: Role;
 }
