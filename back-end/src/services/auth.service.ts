@@ -60,6 +60,7 @@ export class AuthService {
    * @param {string} userId
    * @returns {Promise<void>}
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async logout(userId: string): Promise<void> {
     // NOTE: TO BE IMPLEMENTED LATER (SESSIONS WILL NEED TO BE MANAGED FOR THIS)
     // USER SESSION WILL GET DESTROYED
