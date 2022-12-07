@@ -1,7 +1,7 @@
 import express from "express";
 import { Container } from "typedi";
-import { AuthController } from "../controllers/auth.controller";
 import { requireAuth } from "../middlewares";
+import { AuthController } from "../controllers/auth.controller";
 
 const router = express.Router();
 const controller = Container.get(AuthController);
