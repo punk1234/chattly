@@ -22,8 +22,8 @@ const GroupChatSchema = new Schema(
     },
     createdBy: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   {
     timestamps: true,

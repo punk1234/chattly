@@ -3,7 +3,12 @@ import { Controller } from "../decorators";
 import { Request, Response } from "express";
 import { ResponseHandler } from "../helpers";
 import { ChatService } from "../services/chat.service";
-import { CreateGroupChatDto, CreateSingleChatConnectionDto, CreateSingleChatConnectionResponse, User } from "../models";
+import {
+  CreateGroupChatDto,
+  CreateSingleChatConnectionDto,
+  CreateSingleChatConnectionResponse,
+  User,
+} from "../models";
 import { ChatGroupService } from "../services/group-chat.service";
 
 @Service()
@@ -12,7 +17,7 @@ export class ChatController {
   // eslint-disable-next-line no-useless-constructor
   constructor(
     @Inject() private readonly chatService: ChatService,
-    @Inject() private readonly chatGroupService: ChatGroupService
+    @Inject() private readonly chatGroupService: ChatGroupService,
   ) {}
 
   /**

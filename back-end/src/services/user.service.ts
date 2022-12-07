@@ -120,7 +120,7 @@ export class UserService {
     // NOTE: IS THERE A NEED TO REMOVE `__v` SUCH THAT ONLY INDEX IS USED FOR THIS CALCULATION
     const USERS = await UserModel.find({ username: { $in: usernames } }).select("username -_id");
 
-    if(USERS.length !== usernames.length) {
+    if (USERS.length !== usernames.length) {
       throw new NotFoundError("One or more username(s) does not exist!");
     }
   }

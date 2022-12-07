@@ -98,7 +98,10 @@ export class ChatService {
     }
   }
 
-  async getGroupChatConnections(chatGroupId: string, usernames: Array<string>): Promise<Array<IChatConnection>> {
+  async getGroupChatConnections(
+    chatGroupId: string,
+    usernames: Array<string>,
+  ): Promise<Array<IChatConnection>> {
     const FOUND_CONNECTIONS = await ChatConnectionModel.find({
       connectOne: { $in: usernames },
       connectTwo: chatGroupId,
@@ -108,14 +111,19 @@ export class ChatService {
     return FOUND_CONNECTIONS;
   }
 
-  async bulkAddGroupChatMembers(groupChatId: string, membersUsernames: Array<string>): Promise<void> {
-    const CONNECTIONS_DATA = membersUsernames.map((username: string) => new ChatConnectionModel({
-      connectOne: username,
-      connectTwo: groupChatId,
-      connectTwoType: ChatType.G
-    }));
+  async bulkAddGroupChatMembers(
+    groupChatId: string,
+    membersUsernames: Array<string>,
+  ): Promise<void> {
+    const CONNECTIONS_DATA = membersUsernames.map(
+      (username: string) =>
+        new ChatConnectionModel({
+          connectOne: username,
+          connectTwo: groupChatId,
+          connectTwoType: ChatType.G,
+        }),
+    );
 
     await ChatConnectionModel.bulkSave(CONNECTIONS_DATA);
   }
-
 }
