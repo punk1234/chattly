@@ -4,7 +4,7 @@ import { UserService } from "./user.service";
 import { IInitiateConnectionResponse } from "../interfaces";
 import { ChatMessageService } from "./chat-message.service";
 import { ConflictError, UnprocessableError } from "../exceptions";
-import { ChatType, CreateSingleChatConnectionDto } from "../models";
+import { ChatType, InitiateSingleChatConnectionDto } from "../models";
 import { IChatConnection } from "../database/types/chat-connection.type";
 import ChatConnectionModel from "../database/models/chat-connection.model";
 
@@ -20,12 +20,12 @@ export class ChatService {
    * @method initiateSingleChatConnection
    * @async
    * @param {string} userId
-   * @param {CreateSingleChatConnectionDto} data
+   * @param {InitiateSingleChatConnectionDto} data
    * @returns {Promise<IInitiateConnectionResponse>}
    */
   async initiateSingleChatConnection(
     userId: string,
-    data: CreateSingleChatConnectionDto,
+    data: InitiateSingleChatConnectionDto,
   ): Promise<IInitiateConnectionResponse> {
     const NEW_CONNECT_USER = await this.userService.checkThatUserExistByIdentifier(
       C.UserIdentifier.USERNAME,

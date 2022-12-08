@@ -14,19 +14,19 @@
 /**
  * 
  * @export
- * @interface CreateSingleChatConnectionDto
+ * @interface InitiateSingleChatConnectionDto
  */
-export interface CreateSingleChatConnectionDto {
+export interface InitiateSingleChatConnectionDto {
     /**
      * New connection username
      * @type {string}
-     * @memberof CreateSingleChatConnectionDto
+     * @memberof InitiateSingleChatConnectionDto
      */
     newConnectUsername: string;
     /**
      * Optional chat message. A default `greeting` message will be sent if not provided
      * @type {string}
-     * @memberof CreateSingleChatConnectionDto
+     * @memberof InitiateSingleChatConnectionDto
      */
     initialChatMessage?: string;
 }

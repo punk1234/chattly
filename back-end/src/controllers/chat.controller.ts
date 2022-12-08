@@ -6,8 +6,8 @@ import { ChatService } from "../services/chat.service";
 import {
   CreateGroupChatDto,
   UpdateGroupChatDto,
-  CreateSingleChatConnectionDto,
-  CreateSingleChatConnectionResponse,
+  InitiateSingleChatConnectionDto,
+  InitiateSingleChatConnectionResponse,
   User,
 } from "../models";
 import { ChatGroupService } from "../services/group-chat.service";
@@ -30,10 +30,10 @@ export class ChatController {
   async initiateSingleChatConnection(req: Request, res: Response) {
     const INITIATED_CONNECTION_RESPONSE = await this.chatService.initiateSingleChatConnection(
       req.auth?.userId as string,
-      req.body as CreateSingleChatConnectionDto,
+      req.body as InitiateSingleChatConnectionDto,
     );
 
-    const RESPONSE: CreateSingleChatConnectionResponse = {
+    const RESPONSE: InitiateSingleChatConnectionResponse = {
       chatMessage: INITIATED_CONNECTION_RESPONSE.initialChatMessage.content,
       newConnectUser: INITIATED_CONNECTION_RESPONSE.connectUser as User,
     };
