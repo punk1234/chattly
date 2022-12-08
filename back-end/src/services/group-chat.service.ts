@@ -1,11 +1,11 @@
 import { Inject, Service } from "typedi";
 import { UserService } from "./user.service";
 import { ChatService } from "./chat.service";
-import { ChatType, CreateGroupChatDto } from "../models";
 import { ChatMessageService } from "./chat-message.service";
 import { IGroupChat } from "../database/types/group-chat.type";
 import GroupChatModel from "../database/models/group-chat.model";
-import { BadRequestError, ConflictError, UnprocessableError } from "../exceptions";
+import { ChatType, CreateGroupChatDto, UpdateGroupChatDto } from "../models";
+import { BadRequestError, ConflictError, NotFoundError, UnprocessableError } from "../exceptions";
 
 @Service()
 export class ChatGroupService {
@@ -16,6 +16,13 @@ export class ChatGroupService {
     @Inject() private readonly chatMessageService: ChatMessageService,
   ) {}
 
+  /**
+   * @method create
+   * @async
+   * @param {string} userId
+   * @param {CreateGroupChatDto} data
+   * @returns {Promise<IGroupChat>}
+   */
   async create(userId: string, data: CreateGroupChatDto): Promise<IGroupChat> {
     data.name = data.name.trim();
 
@@ -31,9 +38,6 @@ export class ChatGroupService {
       createdBy: userId,
     }).save();
 
-    // GET USER `username` FROM AUTH-PAYLOAD & USE HERE AS `creatorUsername`
-    await this.addGroupChatMembers(GROUP_CHAT._id, data.members, "", true);
-
     // TODO: HANDLE CHAT-GROUP-IMAGE UPLOAD
 
     await this.chatMessageService.saveChatMessage(
@@ -46,6 +50,46 @@ export class ChatGroupService {
     return GROUP_CHAT;
   }
 
+  /**
+   * @method update
+   * @async
+   * @param {string} userId
+   * @param {UpdateGroupChatDto} data
+   * @returns {Promise<IGroupChat>}
+   */
+  async update(
+    groupChatId: string,
+    data: UpdateGroupChatDto,
+    actorId: string,
+  ): Promise<IGroupChat> {
+    if (data.name !== undefined && (data.name = data.name?.trim())) {
+      throw new BadRequestError("Invalid group-chat name!");
+    }
+
+    const GROUP_CHAT = await this.checkThatGroupChatExist(groupChatId);
+    // CHECK THAT NEW NAME DOES NOT EXIST IF GIVEN
+
+    // CHECK THAT ONLY OWNER CAN UPDATE GROUP-CHAT
+    if (GROUP_CHAT.createdBy !== actorId) {
+      throw new UnprocessableError("Only owner can modify GROUP-CHAT details!");
+    }
+
+    data.name && (GROUP_CHAT.name = data.name);
+    data.description && (GROUP_CHAT.description = data.description);
+
+    if (data.image) {
+      // TODO: HANDLE CHAT-GROUP-IMAGE UPLOAD
+      // UPDATE GROUP-CHAT IMAGE
+    }
+
+    return GROUP_CHAT.save();
+  }
+
+  /**
+   * @method checkThatGroupChatDoesNotExist
+   * @async
+   * @param {string} name
+   */
   private async checkThatGroupChatDoesNotExist(name: string): Promise<void> {
     // NOTE: SAVE GROUP-CHAT NAME THE WAY THEY ARE WITHOUT ALTERING CASE,
     // BUT CHECK FOR UNIQUENESS OF TEXT IGNORING CASES WHILE CREATING i.e BOTH `Abc` & `ABC` CANNOT CO-EXIST
@@ -56,6 +100,30 @@ export class ChatGroupService {
     }
   }
 
+  /**
+   * @method checkThatGroupChatExist
+   * @async
+   * @param {string} groupChatId
+   * @returns {Promise<IGroupChat>}
+   */
+  private async checkThatGroupChatExist(groupChatId: string): Promise<IGroupChat> {
+    const GROUP_CHAT = await GroupChatModel.findById(groupChatId);
+
+    if (GROUP_CHAT) {
+      return GROUP_CHAT;
+    }
+
+    throw new NotFoundError(`Group chat does not exist!`);
+  }
+
+  /**
+   * @method addGroupChatMembers
+   * @async
+   * @param {string} groupChatId
+   * @param {Array<string>} membersUsernames
+   * @param {string} creatorUsername
+   * @param {boolean} newGroupChat
+   */
   private async addGroupChatMembers(
     groupChatId: string,
     membersUsernames: Array<string>,
