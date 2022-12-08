@@ -1,6 +1,7 @@
 export * from "./change-password-dto";
 export * from "./chat-type";
 export * from "./create-group-chat-dto";
+export * from "./update-group-chat-dto";
 export * from "./create-single-chat-connection-dto";
 export * from "./create-single-chat-connection-response";
 export * from "./error-message-dto";

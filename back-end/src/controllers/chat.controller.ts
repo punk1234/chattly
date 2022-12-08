@@ -5,6 +5,7 @@ import { ResponseHandler } from "../helpers";
 import { ChatService } from "../services/chat.service";
 import {
   CreateGroupChatDto,
+  UpdateGroupChatDto,
   CreateSingleChatConnectionDto,
   CreateSingleChatConnectionResponse,
   User,
@@ -54,5 +55,21 @@ export class ChatController {
     );
 
     ResponseHandler.created(res, GROUP_CHAT);
+  }
+
+  /**
+   * @method updateGroupChat
+   * @async
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async updateGroupChat(req: Request, res: Response) {
+    const GROUP_CHAT = await this.chatGroupService.update(
+      req.params.groupChatId,
+      req.body as UpdateGroupChatDto,
+      req.auth?.userId as string,
+    );
+
+    ResponseHandler.ok(res, GROUP_CHAT);
   }
 }
