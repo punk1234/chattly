@@ -113,7 +113,7 @@ export class ChatGroupService {
       return GROUP_CHAT;
     }
 
-    throw new NotFoundError(`Group chat does not eixst!`);
+    throw new NotFoundError(`Group chat does not exist!`);
   }
 
   /**
