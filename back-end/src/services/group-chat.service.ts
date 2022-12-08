@@ -19,8 +19,8 @@ export class ChatGroupService {
   /**
    * @method create
    * @async
-   * @param {string} userId 
-   * @param {CreateGroupChatDto} data 
+   * @param {string} userId
+   * @param {CreateGroupChatDto} data
    * @returns {Promise<IGroupChat>}
    */
   async create(userId: string, data: CreateGroupChatDto): Promise<IGroupChat> {
@@ -53,12 +53,16 @@ export class ChatGroupService {
   /**
    * @method update
    * @async
-   * @param {string} userId 
-   * @param {UpdateGroupChatDto} data 
+   * @param {string} userId
+   * @param {UpdateGroupChatDto} data
    * @returns {Promise<IGroupChat>}
    */
-  async update(groupChatId: string, data: UpdateGroupChatDto, actorId: string): Promise<IGroupChat> {
-    if(data.name !== undefined && (data.name = data.name?.trim())) {
+  async update(
+    groupChatId: string,
+    data: UpdateGroupChatDto,
+    actorId: string,
+  ): Promise<IGroupChat> {
+    if (data.name !== undefined && (data.name = data.name?.trim())) {
       throw new BadRequestError("Invalid group-chat name!");
     }
 
@@ -66,14 +70,14 @@ export class ChatGroupService {
     // CHECK THAT NEW NAME DOES NOT EXIST IF GIVEN
 
     // CHECK THAT ONLY OWNER CAN UPDATE GROUP-CHAT
-    if(GROUP_CHAT.createdBy !== actorId) {
+    if (GROUP_CHAT.createdBy !== actorId) {
       throw new UnprocessableError("Only owner can modify GRUP-CHAT details!");
     }
 
     data.name && (GROUP_CHAT.name = data.name);
     data.description && (GROUP_CHAT.description = data.description);
 
-    if(data.image) {
+    if (data.image) {
       // TODO: HANDLE CHAT-GROUP-IMAGE UPLOAD
       // UPDATE GROUP-CHAT IMAGE
     }
@@ -84,7 +88,7 @@ export class ChatGroupService {
   /**
    * @method checkThatGroupChatDoesNotExist
    * @async
-   * @param {string} name 
+   * @param {string} name
    */
   private async checkThatGroupChatDoesNotExist(name: string): Promise<void> {
     // NOTE: SAVE GROUP-CHAT NAME THE WAY THEY ARE WITHOUT ALTERING CASE,
@@ -99,7 +103,7 @@ export class ChatGroupService {
   /**
    * @method checkThatGroupChatExist
    * @async
-   * @param {string} groupChatId 
+   * @param {string} groupChatId
    * @returns {Promise<IGroupChat>}
    */
   private async checkThatGroupChatExist(groupChatId: string): Promise<IGroupChat> {
@@ -115,10 +119,10 @@ export class ChatGroupService {
   /**
    * @method addGroupChatMembers
    * @async
-   * @param {string} groupChatId 
-   * @param {Array<string>} membersUsernames 
-   * @param {string} creatorUsername 
-   * @param {boolean} newGroupChat 
+   * @param {string} groupChatId
+   * @param {Array<string>} membersUsernames
+   * @param {string} creatorUsername
+   * @param {boolean} newGroupChat
    */
   private async addGroupChatMembers(
     groupChatId: string,
