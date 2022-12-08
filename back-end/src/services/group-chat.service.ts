@@ -71,7 +71,7 @@ export class ChatGroupService {
 
     // CHECK THAT ONLY OWNER CAN UPDATE GROUP-CHAT
     if (GROUP_CHAT.createdBy !== actorId) {
-      throw new UnprocessableError("Only owner can modify GRUP-CHAT details!");
+      throw new UnprocessableError("Only owner can modify GROUP-CHAT details!");
     }
 
     data.name && (GROUP_CHAT.name = data.name);
@@ -82,7 +82,7 @@ export class ChatGroupService {
       // UPDATE GROUP-CHAT IMAGE
     }
 
-    return GROUP_CHAT;
+    return GROUP_CHAT.save();
   }
 
   /**
