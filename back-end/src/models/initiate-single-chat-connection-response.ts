@@ -15,19 +15,19 @@ import { User } from './user';
 /**
  * Response object for chat-connection created
  * @export
- * @interface CreateSingleChatConnectionResponse
+ * @interface InitiateSingleChatConnectionResponse
  */
-export interface CreateSingleChatConnectionResponse {
+export interface InitiateSingleChatConnectionResponse {
     /**
      * 
      * @type {string}
-     * @memberof CreateSingleChatConnectionResponse
+     * @memberof InitiateSingleChatConnectionResponse
      */
     chatMessage: string;
     /**
      * 
      * @type {User}
-     * @memberof CreateSingleChatConnectionResponse
+     * @memberof InitiateSingleChatConnectionResponse
      */
     newConnectUser: User;
 }
