@@ -72,4 +72,16 @@ export class ChatController {
 
     ResponseHandler.ok(res, GROUP_CHAT);
   }
+
+  /**
+   * @method sendChatMessage
+   * @async
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async sendChatMessage(req: Request, res: Response) {
+    await this.chatService.sendChatMessage(req.auth?.userId as string, req.body);
+
+    ResponseHandler.ok(res, { success: true });
+  }
 }
