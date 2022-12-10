@@ -16,4 +16,6 @@ router.post("/group-chats", requireAuth(), chatController.createGroupChat);
 
 router.patch("/group-chats/:groupChatId", requireAuth(), chatController.updateGroupChat);
 
+router.post("/chat-message/send", requireAuth(), chatController.sendChatMessage);
+
 export default router;

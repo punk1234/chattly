@@ -5,7 +5,7 @@ import { Home, Login, SignUp, Chat, Error } from './pages';
 function App() {
   return (
     <div className="App">
-      CHAT APP
+      {/* CHAT APP */}
 
       <Router>
         <Routes>

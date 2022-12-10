@@ -3,10 +3,11 @@ import { Inject, Service } from "typedi";
 import { UserService } from "./user.service";
 import { IInitiateConnectionResponse } from "../interfaces";
 import { ChatMessageService } from "./chat-message.service";
-import { ConflictError, UnprocessableError } from "../exceptions";
-import { ChatType, InitiateSingleChatConnectionDto } from "../models";
+import { BadRequestError, ConflictError, UnprocessableError } from "../exceptions";
+import { ChatType, InitiateSingleChatConnectionDto, SendChatMessageDto } from "../models";
 import { IChatConnection } from "../database/types/chat-connection.type";
 import ChatConnectionModel from "../database/models/chat-connection.model";
+import { IChatMessage } from "../database/types/chat-message.type";
 
 @Service()
 export class ChatService {
@@ -54,6 +55,34 @@ export class ChatService {
   }
 
   /**
+   * @method sendChatMessage
+   * @async
+   * @param {string} userId
+   * @param {SendChatMessageDto} data
+   * @returns {Promise<IChatMessage>}
+   */
+  async sendChatMessage(
+    userId: string,
+    data: SendChatMessageDto,
+  ): Promise<IChatMessage> {
+    if(!(data.content = data.content.trim())) {
+      throw new BadRequestError("Message must have valid content!");
+    }
+
+    data.recipientType = data.recipientType || ChatType.S;
+
+    await this.checkThatChatConnectionExist(userId, data.recipientID);
+    const CHAT_MESSAGE = await this.chatMessageService.saveChatMessage(
+      userId,
+      data.recipientID,
+      data.recipientType,
+      data.content
+    );
+
+    return CHAT_MESSAGE;
+  }
+
+  /**
    * @method createChatConnection
    * @async
    * @param {string} initiatingUserId
@@ -96,6 +125,35 @@ export class ChatService {
     if (FOUND_CONNECTION) {
       throw new ConflictError("Single chat connection already exist!");
     }
+  }
+
+  /**
+   * @method checkThatChatConnectionExist
+   * @async
+   * @param {string} connectOneId
+   * @param {string} connectTwoId
+   * @param {ChatType} connectTwoType
+   */
+  private async checkThatChatConnectionExist(
+    connectOneId: string,
+    connectTwoId: string,
+    connectTwoType: ChatType = ChatType.S
+  ): Promise<IChatConnection> {
+    const CONNECT_IDS: Array<string> = [connectOneId, connectTwoId];
+
+    // TODO: CHECKOUT HOW THIS AFFECTS INDEXING or IS IT BETTER TO USE `A & B OR B & A`
+    // DOES `$in` USE INDEX
+    const FOUND_CONNECTION = await ChatConnectionModel.findOne({
+      connectOne: { $in: CONNECT_IDS },
+      connectTwo: { $in: CONNECT_IDS },
+      connectTwoType,
+    });
+
+    if (FOUND_CONNECTION) {
+      return FOUND_CONNECTION;
+    }
+
+    throw new UnprocessableError("No Chat connection!");
   }
 
   async getGroupChatConnections(
