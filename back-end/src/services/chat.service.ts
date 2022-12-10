@@ -61,11 +61,8 @@ export class ChatService {
    * @param {SendChatMessageDto} data
    * @returns {Promise<IChatMessage>}
    */
-  async sendChatMessage(
-    userId: string,
-    data: SendChatMessageDto,
-  ): Promise<IChatMessage> {
-    if(!(data.content = data.content.trim())) {
+  async sendChatMessage(userId: string, data: SendChatMessageDto): Promise<IChatMessage> {
+    if (!(data.content = data.content.trim())) {
       throw new BadRequestError("Message must have valid content!");
     }
 
@@ -76,7 +73,7 @@ export class ChatService {
       userId,
       data.recipientID,
       data.recipientType,
-      data.content
+      data.content,
     );
 
     return CHAT_MESSAGE;
@@ -137,7 +134,7 @@ export class ChatService {
   private async checkThatChatConnectionExist(
     connectOneId: string,
     connectTwoId: string,
-    connectTwoType: ChatType = ChatType.S
+    connectTwoType: ChatType = ChatType.S,
   ): Promise<IChatConnection> {
     const CONNECT_IDS: Array<string> = [connectOneId, connectTwoId];
 
