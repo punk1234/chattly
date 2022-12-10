@@ -1,0 +1,56 @@
+.SignUp {
+  display: grid;
+  place-items: center;
+  /* background-color: purple; */
+  padding: 1px;
+  height: 100vh;
+}
+
+form {
+  display: grid;
+  width: 100%;
+  max-width: 500px;
+  gap: 10px;
+  color: white;
+  /* border: 1px dashed white; */
+  border-radius: 10px;
+  /* margin: auto; */
+  padding: 30px;
+  /* height: 100%; */
+}
+
+a {
+  color: yellow;
+}
+
+.SignUp__info_msg {
+  border-color: black;
+  background-color: orangered;
+  padding: 1em 3em;
+  border-radius: 1em;
+}
+
+label {
+  color: black;
+}
+
+input {
+  border-style: none;
+  border-radius: 0.25em;
+}
+
+input[type="text"], input[type="password"] {
+  font-size: 2rem;
+  border-style: none;
+  padding: 0.25em;
+}
+
+input[type="submit"] {
+  background-color: yellow;
+  padding: 1em;
+  margin-top: 3em;
+}
+
+input[type="submit"]:hover {
+    background-color: green;
+}
