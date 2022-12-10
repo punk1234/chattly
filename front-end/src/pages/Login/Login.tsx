@@ -50,8 +50,12 @@ export function Login() {
       }
 
       <form>
-        <label htmlFor="usernameOrEmail">User ID</label>
-        <input type="text" id="usernameOrEmail" required onChange={(evt) => setUsernameOrEmail(evt.target.value)} />
+        <label htmlFor="usernameOrEmail">User ID <em>(username or email)</em></label>
+        <input
+          type="text"
+          id="usernameOrEmail"
+          onChange={(evt) => setUsernameOrEmail(evt.target.value)}
+        />
 
         <label htmlFor="password">Password</label>
         <input type="password" id="password" placeholder="********" onChange={(evt) => setPassword(evt.target.value)} />
@@ -65,7 +69,7 @@ export function Login() {
       </form>
 
       <a href="/create-account">
-        Don't have an account yet? Sign-Up
+        Don't have an account yet? Create Account
       </a>
     </div>
   )
