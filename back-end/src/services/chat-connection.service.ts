@@ -80,6 +80,13 @@ export class ChatConnectionService {
     throw new UnprocessableError("No Chat connection!");
   }
 
+  /**
+   * @method updateSingleChatLastMessageAt
+   * @async
+   * @param {string} connectOne
+   * @param {string} connectTwo
+   * @param {Date} lastChatMessageAt
+   */
   async updateSingleChatLastMessageAt(
     connectOne: string,
     connectTwo: string,
@@ -96,6 +103,13 @@ export class ChatConnectionService {
     );
   }
 
+  /**
+   * @method getGroupChatConnections
+   * @async
+   * @param {string} chatGroupId
+   * @param {Array<string>} usernames
+   * @returns {Promise<Array<IChatConnection>>}
+   */
   async getGroupChatConnections(
     chatGroupId: string,
     usernames: Array<string>,
@@ -109,6 +123,12 @@ export class ChatConnectionService {
     return FOUND_CONNECTIONS;
   }
 
+  /**
+   * @method bulkAddChatConnections
+   * @async
+   * @param {string} groupChatId
+   * @param {Array<string>} connnectionsUsernames
+   */
   async bulkAddChatConnections(
     groupChatId: string,
     connnectionsUsernames: Array<string>,

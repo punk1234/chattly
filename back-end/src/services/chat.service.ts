@@ -91,6 +91,14 @@ export class ChatService {
     return CHAT_MESSAGE;
   }
 
+  /**
+   * @method updateChatLastMessageAt
+   * @async
+   * @param {string} recipient
+   * @param {ChatType} recipientType
+   * @param {string} from
+   * @param {IChatMessage} chatMessage
+   */
   private async updateChatLastMessageAt(
     recipient: string,
     recipientType: ChatType,

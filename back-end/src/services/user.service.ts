@@ -116,6 +116,11 @@ export class UserService {
     }
   }
 
+  /**
+   * @method checkThatUsernamesExists
+   * @async
+   * @param {Array<string>} usernames
+   */
   async checkThatUsernamesExists(usernames: Array<string>): Promise<void> {
     // NOTE: IS THERE A NEED TO REMOVE `__v` SUCH THAT ONLY INDEX IS USED FOR THIS CALCULATION
     const USERS = await UserModel.find({ username: { $in: usernames } }).select("username -_id");
