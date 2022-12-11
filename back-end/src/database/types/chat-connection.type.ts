@@ -10,4 +10,5 @@ export interface IChatConnection extends Document {
   connectTwo: string;
   connectTwoType: ChatType; // TODO: UPDATE API-SPEC to allow FULL-NAMES FOR CHAT KEYS like `SINGLE` instread of `S`
   initiatedAt: Date;
+  lastChatMessageAt: Date;
 }

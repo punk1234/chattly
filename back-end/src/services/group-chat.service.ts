@@ -1,19 +1,19 @@
 import { Inject, Service } from "typedi";
 import { UserService } from "./user.service";
-import { ChatService } from "./chat.service";
 import { ChatMessageService } from "./chat-message.service";
 import { IGroupChat } from "../database/types/group-chat.type";
 import GroupChatModel from "../database/models/group-chat.model";
 import { ChatType, CreateGroupChatDto, UpdateGroupChatDto } from "../models";
 import { BadRequestError, ConflictError, NotFoundError, UnprocessableError } from "../exceptions";
+import { ChatConnectionService } from "./chat-connection.service";
 
 @Service()
-export class ChatGroupService {
+export class GroupChatService {
   // eslint-disable-next-line no-useless-constructor
   constructor(
     @Inject() private readonly userService: UserService,
-    @Inject() private readonly chatService: ChatService,
     @Inject() private readonly chatMessageService: ChatMessageService,
+    @Inject() private readonly chatConnectionService: ChatConnectionService,
   ) {}
 
   /**
@@ -141,7 +141,7 @@ export class ChatGroupService {
     await this.userService.checkThatUsernamesExists(membersUsernames);
 
     // NOTE: CAN USE `Partial<...>` FOR THE RETURN TYPE HERE
-    const ALREADY_GROUP_MEMBERS = await this.chatService.getGroupChatConnections(
+    const ALREADY_GROUP_MEMBERS = await this.chatConnectionService.getGroupChatConnections(
       groupChatId,
       membersUsernames,
     );
@@ -150,6 +150,10 @@ export class ChatGroupService {
       throw new ConflictError(`${ALREADY_GROUP_MEMBERS.length} user(s) are already members!`);
     }
 
-    await this.chatService.bulkAddGroupChatMembers(groupChatId, membersUsernames);
+    await this.chatConnectionService.bulkAddChatConnections(groupChatId, membersUsernames);
+  }
+
+  async updateChatLastMessageAt(groupChatId: string, lastChatMessageAt: Date): Promise<void> {
+    await GroupChatModel.updateOne({ _id: groupChatId }, { lastChatMessageAt });
   }
 }
