@@ -83,9 +83,9 @@ export class ChatConnectionService {
   /**
    * @method updateSingleChatLastMessageAt
    * @async
-   * @param {string} connectOne 
-   * @param {string} connectTwo 
-   * @param {Date} lastChatMessageAt 
+   * @param {string} connectOne
+   * @param {string} connectTwo
+   * @param {Date} lastChatMessageAt
    */
   async updateSingleChatLastMessageAt(
     connectOne: string,
@@ -106,8 +106,8 @@ export class ChatConnectionService {
   /**
    * @method getGroupChatConnections
    * @async
-   * @param {string} chatGroupId 
-   * @param {Array<string>} usernames 
+   * @param {string} chatGroupId
+   * @param {Array<string>} usernames
    * @returns {Promise<Array<IChatConnection>>}
    */
   async getGroupChatConnections(
@@ -126,8 +126,8 @@ export class ChatConnectionService {
   /**
    * @method bulkAddChatConnections
    * @async
-   * @param {string} groupChatId 
-   * @param {Array<string>} connnectionsUsernames 
+   * @param {string} groupChatId
+   * @param {Array<string>} connnectionsUsernames
    */
   async bulkAddChatConnections(
     groupChatId: string,
