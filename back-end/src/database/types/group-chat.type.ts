@@ -11,4 +11,5 @@ export interface IGroupChat extends Document {
   createdBy: string;
   createdAt: Date;
   updatedAt: Date;
+  lastChatMessageAt: Date;
 }

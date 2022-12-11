@@ -27,6 +27,9 @@ const ChatConnectionSchema = new Schema(
       type: Date,
       default: Date.now,
     },
+    lastChatMessageAt: {
+      type: Date,
+    }
   },
   {
     toJSON: {
