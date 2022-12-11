@@ -29,7 +29,7 @@ const ChatConnectionSchema = new Schema(
     },
     lastChatMessageAt: {
       type: Date,
-    }
+    },
   },
   {
     toJSON: {

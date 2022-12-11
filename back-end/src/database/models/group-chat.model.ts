@@ -26,7 +26,7 @@ const GroupChatSchema = new Schema(
     },
     lastChatMessageAt: {
       type: Date,
-    }
+    },
   },
   {
     timestamps: true,

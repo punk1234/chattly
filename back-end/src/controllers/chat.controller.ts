@@ -10,7 +10,7 @@ import {
   InitiateSingleChatConnectionResponse,
   User,
 } from "../models";
-import { ChatGroupService } from "../services/group-chat.service";
+import { GroupChatService } from "../services/group-chat.service";
 
 @Service()
 @Controller()
@@ -18,7 +18,7 @@ export class ChatController {
   // eslint-disable-next-line no-useless-constructor
   constructor(
     @Inject() private readonly chatService: ChatService,
-    @Inject() private readonly chatGroupService: ChatGroupService,
+    @Inject() private readonly groupChatService: GroupChatService,
   ) {}
 
   /**
@@ -49,7 +49,7 @@ export class ChatController {
    * @param {Response} res
    */
   async createGroupChat(req: Request, res: Response) {
-    const GROUP_CHAT = await this.chatGroupService.create(
+    const GROUP_CHAT = await this.groupChatService.create(
       req.auth?.userId as string,
       req.body as CreateGroupChatDto,
     );
@@ -64,7 +64,7 @@ export class ChatController {
    * @param {Response} res
    */
   async updateGroupChat(req: Request, res: Response) {
-    const GROUP_CHAT = await this.chatGroupService.update(
+    const GROUP_CHAT = await this.groupChatService.update(
       req.params.groupChatId,
       req.body as UpdateGroupChatDto,
       req.auth?.userId as string,

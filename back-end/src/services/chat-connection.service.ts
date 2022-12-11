@@ -1,22 +1,11 @@
-import C from "../constants";
-import { Inject, Service } from "typedi";
-import { UserService } from "./user.service";
-import { IInitiateConnectionResponse } from "../interfaces";
-import { ChatMessageService } from "./chat-message.service";
-import { BadRequestError, ConflictError, UnprocessableError } from "../exceptions";
-import { ChatType, InitiateSingleChatConnectionDto, SendChatMessageDto } from "../models";
+import { Service } from "typedi";
+import { ChatType } from "../models";
+import { ConflictError, UnprocessableError } from "../exceptions";
 import { IChatConnection } from "../database/types/chat-connection.type";
 import ChatConnectionModel from "../database/models/chat-connection.model";
-import { IChatMessage } from "../database/types/chat-message.type";
 
 @Service()
 export class ChatConnectionService {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(
-    @Inject() private readonly userService: UserService,
-    @Inject() private readonly chatMessageService: ChatMessageService,
-  ) {}
-
   /**
    * @method createChatConnection
    * @async
@@ -91,15 +80,19 @@ export class ChatConnectionService {
     throw new UnprocessableError("No Chat connection!");
   }
 
-  async updateSingleChatLastMessageAt(connectOne: string, connectTwo: string, lastChatMessageAt: Date): Promise<void> {
+  async updateSingleChatLastMessageAt(
+    connectOne: string,
+    connectTwo: string,
+    lastChatMessageAt: Date,
+  ): Promise<void> {
     const CONNECT_IDS: Array<string> = [connectOne, connectTwo];
 
     await ChatConnectionModel.updateOne(
       {
         connectOne: { $in: CONNECT_IDS },
-        connectTwo: { $in: CONNECT_IDS }
+        connectTwo: { $in: CONNECT_IDS },
       },
-      { lastChatMessageAt }
+      { lastChatMessageAt },
     );
   }
 
@@ -131,5 +124,4 @@ export class ChatConnectionService {
 
     await ChatConnectionModel.bulkSave(CONNECTIONS_DATA);
   }
-
 }

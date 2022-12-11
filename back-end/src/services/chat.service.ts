@@ -39,7 +39,10 @@ export class ChatService {
       throw new UnprocessableError("User cannot connect with oneself!");
     }
 
-    await this.chatConnectionService.checkThatSingleConnectionDoesNotExist(userId, NEW_CONNECT_USER._id);
+    await this.chatConnectionService.checkThatSingleConnectionDoesNotExist(
+      userId,
+      NEW_CONNECT_USER._id,
+    );
     await this.chatConnectionService.createChatConnection(userId, NEW_CONNECT_USER._id, ChatType.S);
 
     // NOTE: MIGHT NOT BE THE BEST IF `username` CHANGES IN FUTURE, BUT NOT CHANGING FOR NOW
@@ -78,17 +81,30 @@ export class ChatService {
       data.content,
     );
 
-    await this.updateChatLastMessageAt(data.recipientID, data.recipientType, data.recipientType, CHAT_MESSAGE);
+    await this.updateChatLastMessageAt(
+      data.recipientID,
+      data.recipientType,
+      data.recipientType,
+      CHAT_MESSAGE,
+    );
 
     return CHAT_MESSAGE;
   }
 
-  private async updateChatLastMessageAt(recipient: string, recipientType: ChatType, from: string, chatMessage: IChatMessage): Promise<void> {
-    if(recipientType === ChatType.S) {
-      await this.chatConnectionService.updateSingleChatLastMessageAt(from, recipient, chatMessage.createdAt);
+  private async updateChatLastMessageAt(
+    recipient: string,
+    recipientType: ChatType,
+    from: string,
+    chatMessage: IChatMessage,
+  ): Promise<void> {
+    if (recipientType === ChatType.S) {
+      await this.chatConnectionService.updateSingleChatLastMessageAt(
+        from,
+        recipient,
+        chatMessage.createdAt,
+      );
     } else {
       await this.groupChatService.updateChatLastMessageAt(recipient, chatMessage.createdAt);
     }
   }
-
 }

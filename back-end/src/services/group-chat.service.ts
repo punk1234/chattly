@@ -154,9 +154,6 @@ export class GroupChatService {
   }
 
   async updateChatLastMessageAt(groupChatId: string, lastChatMessageAt: Date): Promise<void> {
-    await GroupChatModel.updateOne(
-      { _id: groupChatId },
-      { lastChatMessageAt }
-    );
+    await GroupChatModel.updateOne({ _id: groupChatId }, { lastChatMessageAt });
   }
 }
