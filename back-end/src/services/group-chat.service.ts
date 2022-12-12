@@ -149,7 +149,7 @@ export class GroupChatService {
 
     await this.userService.checkThatUsernamesExists(membersUsernames);
 
-    if(newGroupChat) {
+    if (newGroupChat) {
       membersUsernames.push(creatorUsername);
     }
 

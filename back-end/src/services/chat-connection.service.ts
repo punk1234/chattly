@@ -64,7 +64,8 @@ export class ChatConnectionService {
     connectTwoId: string,
     connectTwoType: ChatType = ChatType.S,
   ): Promise<IChatConnection> {
-    const CONNECT_IDS: Array<string> = [connectOneId, connectTwoId];console.log(CONNECT_IDS, connectTwoType)
+    const CONNECT_IDS: Array<string> = [connectOneId, connectTwoId];
+    console.log(CONNECT_IDS, connectTwoType);
 
     // TODO: CHECKOUT HOW THIS AFFECTS INDEXING or IS IT BETTER TO USE `A & B OR B & A`
     // DOES `$in` USE INDEX
@@ -114,11 +115,7 @@ export class ChatConnectionService {
     connectionId: string,
     lastChatMessageAt: Date,
   ): Promise<void> {
-
-    await ChatConnectionModel.updateOne(
-      { _id: connectionId },
-      { lastChatMessageAt },
-    );
+    await ChatConnectionModel.updateOne({ _id: connectionId }, { lastChatMessageAt });
   }
 
   /**
@@ -166,19 +163,19 @@ export class ChatConnectionService {
   /**
    * @method getChats
    * @async
-   * @param {string} username 
+   * @param {string} username
    * @returns {Promise<IChat[]>}
    */
   async getChats(username: string): Promise<IChat[]> {
     return ChatConnectionModel.aggregate([
-      { $match: { $or: [{ connectOne: username }, { connectTwo: username }]} },
+      { $match: { $or: [{ connectOne: username }, { connectTwo: username }] } },
       {
         $lookup: {
           from: "group_chats",
           localField: "connectTwo",
           foreignField: "_id",
           as: "group_chat",
-        }
+        },
       },
       {
         $project: {
@@ -187,20 +184,26 @@ export class ChatConnectionService {
           title: {
             $cond: {
               if: { $eq: ["$connectTwoType", ChatType.S] },
-              then: { $cond: { if: { $eq: ["$connectOne", username] }, then: "$connectTwo", else: "$connectOne" } },
-              else: { $arrayElemAt: ["$group_chat.name", 0] }
-            }
+              then: {
+                $cond: {
+                  if: { $eq: ["$connectOne", username] },
+                  then: "$connectTwo",
+                  else: "$connectOne",
+                },
+              },
+              else: { $arrayElemAt: ["$group_chat.name", 0] },
+            },
           },
           lastMessageAt: {
             $cond: {
               if: { $eq: ["$connectTwoType", ChatType.S] },
               then: "$lastChatMessageAt",
-              else: { $arrayElemAt: ["$group_chat.lastChatMessageAt", 0] }
-            }
+              else: { $arrayElemAt: ["$group_chat.lastChatMessageAt", 0] },
+            },
           },
-        }
+        },
       },
-      { $sort: { "lastMessageAt": -1 } }
+      { $sort: { lastMessageAt: -1 } },
     ]);
   }
 }

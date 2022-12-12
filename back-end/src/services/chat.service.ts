@@ -44,7 +44,11 @@ export class ChatService {
       NEW_CONNECT_USER.username,
     );
 
-    const CHAT_CONNECTION = await this.chatConnectionService.createChatConnection(username, NEW_CONNECT_USER.username, ChatType.S);
+    const CHAT_CONNECTION = await this.chatConnectionService.createChatConnection(
+      username,
+      NEW_CONNECT_USER.username,
+      ChatType.S,
+    );
 
     // NOTE: MIGHT NOT BE THE BEST IF `username` CHANGES IN FUTURE, BUT NOT CHANGING FOR NOW
     const CHAT_MESSAGE = await this.chatMessageService.saveChatMessage(
@@ -54,7 +58,10 @@ export class ChatService {
       data.initialChatMessage || `Hi @${NEW_CONNECT_USER.username}`,
     );
 
-    await this.chatConnectionService.updateSingleChatLastMessageAtById(CHAT_CONNECTION._id, CHAT_MESSAGE.createdAt);
+    await this.chatConnectionService.updateSingleChatLastMessageAtById(
+      CHAT_CONNECTION._id,
+      CHAT_MESSAGE.createdAt,
+    );
 
     return {
       connectUser: NEW_CONNECT_USER,
@@ -74,9 +81,14 @@ export class ChatService {
       throw new BadRequestError("Message must have valid content!");
     }
 
-    data.recipientType = data.recipientType || ChatType.S;console.log(username)
+    data.recipientType = data.recipientType || ChatType.S;
+    console.log(username);
 
-    await this.chatConnectionService.checkThatChatConnectionExist(username, data.recipientID, data.recipientType);
+    await this.chatConnectionService.checkThatChatConnectionExist(
+      username,
+      data.recipientID,
+      data.recipientType,
+    );
     const CHAT_MESSAGE = await this.chatMessageService.saveChatMessage(
       username,
       data.recipientID,
