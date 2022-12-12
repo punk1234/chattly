@@ -22,12 +22,12 @@ export class ChatService {
   /**
    * @method initiateSingleChatConnection
    * @async
-   * @param {string} userId
+   * @param {string} username
    * @param {InitiateSingleChatConnectionDto} data
    * @returns {Promise<IInitiateConnectionResponse>}
    */
   async initiateSingleChatConnection(
-    userId: string,
+    username: string,
     data: InitiateSingleChatConnectionDto,
   ): Promise<IInitiateConnectionResponse> {
     const NEW_CONNECT_USER = await this.userService.checkThatUserExistByIdentifier(
@@ -35,22 +35,32 @@ export class ChatService {
       data.newConnectUsername,
     );
 
-    if (userId === NEW_CONNECT_USER?._id) {
+    if (username === NEW_CONNECT_USER.username) {
       throw new UnprocessableError("User cannot connect with oneself!");
     }
 
     await this.chatConnectionService.checkThatSingleConnectionDoesNotExist(
-      userId,
-      NEW_CONNECT_USER._id,
+      username,
+      NEW_CONNECT_USER.username,
     );
-    await this.chatConnectionService.createChatConnection(userId, NEW_CONNECT_USER._id, ChatType.S);
+
+    const CHAT_CONNECTION = await this.chatConnectionService.createChatConnection(
+      username,
+      NEW_CONNECT_USER.username,
+      ChatType.S,
+    );
 
     // NOTE: MIGHT NOT BE THE BEST IF `username` CHANGES IN FUTURE, BUT NOT CHANGING FOR NOW
     const CHAT_MESSAGE = await this.chatMessageService.saveChatMessage(
-      userId,
-      NEW_CONNECT_USER._id,
+      username,
+      NEW_CONNECT_USER.username,
       ChatType.S,
       data.initialChatMessage || `Hi @${NEW_CONNECT_USER.username}`,
+    );
+
+    await this.chatConnectionService.updateSingleChatLastMessageAtById(
+      CHAT_CONNECTION._id,
+      CHAT_MESSAGE.createdAt,
     );
 
     return {
@@ -62,20 +72,25 @@ export class ChatService {
   /**
    * @method sendChatMessage
    * @async
-   * @param {string} userId
+   * @param {string} username
    * @param {SendChatMessageDto} data
    * @returns {Promise<IChatMessage>}
    */
-  async sendChatMessage(userId: string, data: SendChatMessageDto): Promise<IChatMessage> {
+  async sendChatMessage(username: string, data: SendChatMessageDto): Promise<IChatMessage> {
     if (!(data.content = data.content.trim())) {
       throw new BadRequestError("Message must have valid content!");
     }
 
     data.recipientType = data.recipientType || ChatType.S;
+    console.log(username);
 
-    await this.chatConnectionService.checkThatChatConnectionExist(userId, data.recipientID);
+    await this.chatConnectionService.checkThatChatConnectionExist(
+      username,
+      data.recipientID,
+      data.recipientType,
+    );
     const CHAT_MESSAGE = await this.chatMessageService.saveChatMessage(
-      userId,
+      username,
       data.recipientID,
       data.recipientType,
       data.content,
