@@ -11,6 +11,8 @@ import {
   User,
 } from "../models";
 import { GroupChatService } from "../services/group-chat.service";
+import { ChatConnectionService } from "../services/chat-connection.service";
+import { IChat } from "../interfaces";
 
 @Service()
 @Controller()
@@ -19,6 +21,7 @@ export class ChatController {
   constructor(
     @Inject() private readonly chatService: ChatService,
     @Inject() private readonly groupChatService: GroupChatService,
+    @Inject() private readonly chatConnectionService: ChatConnectionService,
   ) {}
 
   /**
@@ -29,7 +32,7 @@ export class ChatController {
    */
   async initiateSingleChatConnection(req: Request, res: Response) {
     const INITIATED_CONNECTION_RESPONSE = await this.chatService.initiateSingleChatConnection(
-      req.auth?.userId as string,
+      req.auth?.username as string,
       req.body as InitiateSingleChatConnectionDto,
     );
 
@@ -80,8 +83,20 @@ export class ChatController {
    * @param {Response} res
    */
   async sendChatMessage(req: Request, res: Response) {
-    await this.chatService.sendChatMessage(req.auth?.userId as string, req.body);
+    await this.chatService.sendChatMessage(req.auth?.username as string, req.body);
 
     ResponseHandler.ok(res, { success: true });
+  }
+
+  /**
+   * @method getChats
+   * @async
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async getChats(req: Request, res: Response) {
+    const CHATS: IChat[] = await this.chatConnectionService.getChats(req.auth?.username as string);
+
+    ResponseHandler.ok(res, { records: CHATS });
   }
 }
