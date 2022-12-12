@@ -188,7 +188,6 @@ export class ChatConnectionService {
             $cond: {
               if: { $eq: ["$connectTwoType", ChatType.S] },
               then: { $cond: { if: { $eq: ["$connectOne", username] }, then: "$connectTwo", else: "$connectOne" } },
-              // else: "$group_chat.name"
               else: { $arrayElemAt: ["$group_chat.name", 0] }
             }
           },
