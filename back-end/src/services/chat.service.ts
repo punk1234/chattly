@@ -90,7 +90,7 @@ export class ChatService {
       data.recipientID,
       data.recipientType,
     );
-    
+
     const CHAT_MESSAGE = await this.chatMessageService.saveChatMessage(
       username,
       data.recipientID,

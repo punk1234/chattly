@@ -111,7 +111,7 @@ export class ChatController {
   async getTopChatsMessages(req: Request, res: Response) {
     const CHATS_MESSAGES: IChat[] = await this.chatMessageService.getTopChatsMessages(
       req.auth?.username as string,
-      req.body.entityIds
+      req.body.entityIds,
     );
 
     ResponseHandler.ok(res, { records: CHATS_MESSAGES });
