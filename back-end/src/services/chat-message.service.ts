@@ -3,6 +3,7 @@ import { IChatMessage } from "../database/types/chat-message.type";
 import { ChatType } from "../models";
 import ChatMessageModel from "../database/models/chat-message.model";
 import config from "../config";
+import { IChatMessages } from "../interfaces";
 
 @Service()
 export class ChatMessageService {
@@ -29,11 +30,19 @@ export class ChatMessageService {
     }).save();
   }
 
+  /**
+   * @method getTopChatsMessages
+   * @async
+   * @param {string} userId 
+   * @param {Array<string>} entityIds 
+   * @param {number} maxMessagePerChat 
+   * @returns {Promise<Array<IChatMessages>>}
+   */
   async getTopChatsMessages(
     userId: string,
     entityIds: Array<string>,
     maxMessagePerChat: number = config.MAX_MESSAGES_PER_TOP_CHATS,
-  ): Promise<any> {
+  ): Promise<Array<IChatMessages>> {
     return ChatMessageModel.aggregate([
       { $match: { recipientId: { $in: entityIds } } },
       { $sort: { createdAt: -1 } },
