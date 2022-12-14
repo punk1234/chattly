@@ -12,7 +12,7 @@ import {
 } from "../models";
 import { GroupChatService } from "../services/group-chat.service";
 import { ChatConnectionService } from "../services/chat-connection.service";
-import { IChat } from "../interfaces";
+import { IChat, IChatMessages } from "../interfaces";
 import { ChatMessageService } from "../services/chat-message.service";
 
 @Service()
@@ -109,7 +109,7 @@ export class ChatController {
    * @param {Response} res
    */
   async getTopChatsMessages(req: Request, res: Response) {
-    const CHATS_MESSAGES: IChat[] = await this.chatMessageService.getTopChatsMessages(
+    const CHATS_MESSAGES: Array<IChatMessages> = await this.chatMessageService.getTopChatsMessages(
       req.auth?.username as string,
       req.body.entityIds,
     );
