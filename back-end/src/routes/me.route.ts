@@ -20,4 +20,6 @@ router.post("/chat-message/send", requireAuth(), chatController.sendChatMessage)
 
 router.get("/chats", requireAuth(), chatController.getChats);
 
+router.get("/top-chats/messages", requireAuth(), chatController.getTopChatsMessages);
+
 export default router;
