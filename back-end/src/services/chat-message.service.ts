@@ -33,9 +33,9 @@ export class ChatMessageService {
   /**
    * @method getTopChatsMessages
    * @async
-   * @param {string} userId 
-   * @param {Array<string>} entityIds 
-   * @param {number} maxMessagePerChat 
+   * @param {string} userId
+   * @param {Array<string>} entityIds
+   * @param {number} maxMessagePerChat
    * @returns {Promise<Array<IChatMessages>>}
    */
   async getTopChatsMessages(
