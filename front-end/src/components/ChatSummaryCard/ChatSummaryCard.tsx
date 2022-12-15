@@ -4,7 +4,6 @@ import "./ChatSummaryCard.css";
 function ChatSummaryCard(props: IChatSummary) {
   return (
     <div className="ChatSummaryCard">
-      {/* <div>ChatSummaryCard</div> */}
       <div><strong>{props.title}</strong></div>
       <div className="ChatSummaryCard__last_message_at">{new Date(props.lastMessageAt).toDateString()}</div>
     </div>

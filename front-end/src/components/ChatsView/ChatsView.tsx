@@ -14,8 +14,6 @@ export function ChatsView() {
       "/me/chats"
     );
 
-    console.log(data);
-
     success ?
       setChats(data.records) :
       setInfoMsg((data as any)?.message);
@@ -30,19 +28,16 @@ export function ChatsView() {
       <div>ChatsView</div>
       { infoMsg && <div>{ infoMsg }</div> }
 
-      { chats?.length && chats.map((chat, idx) => (
-        //   <div>
-        //     { chat.title }
-        //   </div>
-
-        <ChatSummaryCard
-          key={idx}
-          title={chat.title}
-          lastMessageAt={chat.lastMessageAt}
-          chatType={chat.chatType}
-          chatId={chat.chatId}
-        />
-      ))}
+      { chats?.length ? chats.map((chat, idx) => (
+          <ChatSummaryCard
+            key={idx}
+            title={chat.title}
+            lastMessageAt={chat.lastMessageAt}
+            chatType={chat.chatType}
+            chatId={chat.chatId}
+          />
+        )): <div>No Chats!</div>
+      }
     </div>
   )
 }
