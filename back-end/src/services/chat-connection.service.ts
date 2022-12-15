@@ -194,6 +194,13 @@ export class ChatConnectionService {
               else: { $arrayElemAt: ["$group_chat.name", 0] },
             },
           },
+          chatId: {
+            $cond: {
+              if: { $eq: ["$connectTwoType", ChatType.S] },
+              then: "$_id",
+              else: { $arrayElemAt: ["$group_chat._id", 0] },
+            },
+          },
           lastMessageAt: {
             $cond: {
               if: { $eq: ["$connectTwoType", ChatType.S] },
