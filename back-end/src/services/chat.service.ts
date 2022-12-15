@@ -53,7 +53,8 @@ export class ChatService {
     // NOTE: MIGHT NOT BE THE BEST IF `username` CHANGES IN FUTURE, BUT NOT CHANGING FOR NOW
     const CHAT_MESSAGE = await this.chatMessageService.saveChatMessage(
       username,
-      NEW_CONNECT_USER.username,
+      // NEW_CONNECT_USER.username,
+      CHAT_CONNECTION._id,
       ChatType.S,
       data.initialChatMessage || `Hi @${NEW_CONNECT_USER.username}`,
     );
@@ -89,6 +90,7 @@ export class ChatService {
       data.recipientID,
       data.recipientType,
     );
+
     const CHAT_MESSAGE = await this.chatMessageService.saveChatMessage(
       username,
       data.recipientID,

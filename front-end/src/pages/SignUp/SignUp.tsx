@@ -55,7 +55,7 @@ export function SignUp() {
         <div className="SignUp__info_msg">{infoMsg}</div>
       }
 
-      <form>
+      <form autoComplete="new-password">
         <label htmlFor="username">Username</label>
         <input type="text" id="username" required={true} onChange={(evt) => setUsername(evt.target.value)} />
 

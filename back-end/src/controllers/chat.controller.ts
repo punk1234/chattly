@@ -12,7 +12,8 @@ import {
 } from "../models";
 import { GroupChatService } from "../services/group-chat.service";
 import { ChatConnectionService } from "../services/chat-connection.service";
-import { IChat } from "../interfaces";
+import { IChat, IChatMessages } from "../interfaces";
+import { ChatMessageService } from "../services/chat-message.service";
 
 @Service()
 @Controller()
@@ -21,6 +22,7 @@ export class ChatController {
   constructor(
     @Inject() private readonly chatService: ChatService,
     @Inject() private readonly groupChatService: GroupChatService,
+    @Inject() private readonly chatMessageService: ChatMessageService,
     @Inject() private readonly chatConnectionService: ChatConnectionService,
   ) {}
 
@@ -98,5 +100,20 @@ export class ChatController {
     const CHATS: IChat[] = await this.chatConnectionService.getChats(req.auth?.username as string);
 
     ResponseHandler.ok(res, { records: CHATS });
+  }
+
+  /**
+   * @method getTopChatsMessages
+   * @async
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async getTopChatsMessages(req: Request, res: Response) {
+    const CHATS_MESSAGES: Array<IChatMessages> = await this.chatMessageService.getTopChatsMessages(
+      req.auth?.username as string,
+      req.body.entityIds,
+    );
+
+    ResponseHandler.ok(res, { records: CHATS_MESSAGES });
   }
 }
