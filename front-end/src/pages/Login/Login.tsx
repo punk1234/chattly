@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import config from "../../config";
-import { apiHandler } from "../../helpers";
+import { apiHandler, appStorage, LocalStorage } from "../../helpers";
 import { LoginResponse } from "../../interfaces/requests-responses";
 import "./Login.css";
 
@@ -35,8 +35,8 @@ export function Login() {
   };
 
   const handleSuccessfulLoginDataCapture = (loginResponse: LoginResponse) => {
-    localStorage.setItem(config.LOCAL_STORAGE_KEY.AUTH_TOKEN, loginResponse.token);
-    localStorage.setItem(config.LOCAL_STORAGE_KEY.USER_DATA, JSON.stringify(loginResponse.user));
+    appStorage.save(LocalStorage.AUTH_TOKEN_KEY, loginResponse.token);
+    appStorage.save(LocalStorage.USER_DATA_KEY, loginResponse.user);
   }
 
   return (
