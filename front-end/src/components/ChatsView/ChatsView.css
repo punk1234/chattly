@@ -1,0 +1,5 @@
+.ChatsView {
+  height: 100vh;
+  overflow: scroll;
+  padding: 0.25em;
+}

@@ -1,0 +1,14 @@
+.Chat__board {
+  display: flex;
+  background-color: purple;
+  color: white;
+  justify-content: space-between;
+}
+
+.Chat__board > :nth-child(1) {
+  flex-basis: 25%;
+}
+
+.Chat__board > :nth-child(2) {
+  flex-basis: 75%;
+}

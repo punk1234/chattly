@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, Method } from "axios";
+import { appStorage, LocalStorage } from "./local-storage.helper";
 import config from "../config";
 
 class ApiHandler {
@@ -10,12 +11,13 @@ class ApiHandler {
     this.instance = axios.create({ baseURL });
   }
 
-  async send(method: HttpMethod, apiUrlPath: string, payload: Record<string, any>): Promise<any> {
+  async send(method: HttpMethod, apiUrlPath: string, payload?: Record<string, any>, authData?: object): Promise<any> {
     try {
       const response = await this.instance.request({
         url: apiUrlPath,
         method,
-        data: payload,
+        data: payload || undefined,
+        headers: authData
       });
       
       return [true, response.data];
@@ -40,6 +42,15 @@ class ApiHandler {
 
       return [, err.response.data];
     }
+  }
+
+  sendWithAuthToken(method: HttpMethod, apiUrlPath: string, payload?: Record<string, any>): Promise<any> {
+    return this.send(
+      method,
+      apiUrlPath,
+      payload,
+      { "Authorization": `Bearer ${appStorage.get(LocalStorage.AUTH_TOKEN_KEY)}` } 
+    );
   }
 
 //   private async sendWithAuthToken(method: HttpMethod, apiUrlPath: string, payload: Record<string, any>, authToken: string): Promise<string> {

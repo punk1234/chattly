@@ -1,0 +1,16 @@
+.ChatSummaryCard {
+  padding: 1em;
+  border-radius: 2%;
+  height: 30px;
+  background-color: white;
+  color: black;
+  margin: 10px 0;
+}
+
+.ChatSummaryCard:hover {
+  background-color: pink;
+}
+
+.ChatSummaryCard__last_message_at {
+  font-size: 0.7em;
+}
