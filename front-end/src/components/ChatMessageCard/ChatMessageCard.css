@@ -1,0 +1,6 @@
+.ChatMessageCard {
+  padding: 0.5em;
+  margin: 0.25em;
+  border-radius: 0.25em;
+  background-color: orange;
+}
