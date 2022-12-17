@@ -1,3 +1,4 @@
+import { ChatMessageCard } from "../ChatMessageCard/ChatMessageCard";
 import "./ChatMessagesView.css";
 
 interface IProps {
@@ -11,12 +12,13 @@ export function ChatMessagesView(props: IProps) {
 
       <div>
         {
-          props.messages?.length ? props.messages.map((item, idx) => (
-            <div key={idx}>
-              { item.messages[0].content }
-              <br />
-              { item.messages[0].createdAt }
-            </div>
+          props.messages?.length ? props.messages.reverse().map((item, idx) => (
+            <ChatMessageCard
+              key={idx}
+              isMine={true}
+              content={item.messages[0].content}
+              dateTime={item.messages[0].createdAt}
+            />
           )) : "No Chat Selected!"
         }
       </div>
