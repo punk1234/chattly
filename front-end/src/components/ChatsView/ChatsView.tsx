@@ -20,12 +20,13 @@ export function ChatsView(props: IProps) {
 
     success ?
       setChats(data.records) :
-      setInfoMsg((data as any)?.message);
+      setInfoMsg((data as any)?.message);console.log("CHATS", chats)
 
+    const entityIds = chats?.map(item => item.chatId);console.log(entityIds)
     const [msgSuccess, msgData] = await apiHandler.sendWithAuthToken(
       "POST",
       "/me/top-chats/messages",
-      { entityIds: ["abc"] }
+      { entityIds }
     );
 
     console.log(msgData);
