@@ -1,3 +1,5 @@
 .ChatMessagesView {
   background-color: white;
+  color: purple;
+  padding: 0.25em;
 }

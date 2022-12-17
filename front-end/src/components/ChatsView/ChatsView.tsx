@@ -4,19 +4,36 @@ import { IChatSummary } from "../../interfaces";
 import ChatSummaryCard from "../ChatSummaryCard/ChatSummaryCard";
 import "./ChatsView.css";
 
-export function ChatsView() {
+interface IProps {
+  setChatsMessagesHandler: Function;
+}
+
+export function ChatsView(props: IProps) {
   const [chats, setChats] = useState<Array<IChatSummary> | null>(null);
   const [infoMsg, setInfoMsg] = useState("");
 
   const fetchChatsFromApi = async () => {
     const [success, data] = await apiHandler.sendWithAuthToken(
-      "GET", 
+      "GET",
       "/me/chats"
     );
 
     success ?
       setChats(data.records) :
-      setInfoMsg((data as any)?.message);
+      setInfoMsg((data as any)?.message);console.log("CHATS", chats)
+
+    const entityIds = chats?.map(item => item.chatId);console.log(entityIds)
+    const [msgSuccess, msgData] = await apiHandler.sendWithAuthToken(
+      "POST",
+      "/me/top-chats/messages",
+      { entityIds }
+    );
+
+    console.log(msgData);
+
+    msgSuccess ?
+      props.setChatsMessagesHandler(msgData.records) :
+      setInfoMsg((msgData as any)?.message);
   }
 
   useEffect(() => {
@@ -26,6 +43,7 @@ export function ChatsView() {
   return (
     <div className="ChatsView">
       <div>ChatsView</div>
+
       { infoMsg && <div>{ infoMsg }</div> }
 
       { chats?.length ? chats.map((chat, idx) => (

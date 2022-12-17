@@ -372,6 +372,37 @@ paths:
         "default":
           $ref: "#/components/responses/ServerError"
 
+  # NOTE: TO BE UPDATED WITH APPROPRIATE REQUEST & RESPONSE
+  /me/top-chats/messages:
+    post:
+      summary: "Get Top-Chats Messages"
+      description: "Get Top-Chats Messages"
+      operationId: getTopChatsMessages
+      x-visibility: "public"
+      tags:
+        - "chats"
+      security: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TopChatsMessagesDto"
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InitiateSingleChatConnectionResponse"
+        "400":
+          $ref: "#/components/responses/InvalidRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "default":
+          $ref: "#/components/responses/ServerError"
+
   # GROUP CHAT MEMBERS ENDPOINTS TO BE ADDED
   # - ADD GROUP CHAT MEMBER
   # - REMOVE GROUP CHAT MEMBER
@@ -528,6 +559,20 @@ components:
           type: "string"
           minLength: 3
           description: "New password"
+
+    TopChatsMessagesDto:
+      type: "object"
+      additionalProperties: false
+      required:
+        - "entityIds"
+      properties:
+        entityIds:
+          type: "array"
+          minItems: 1
+          uniqueItems: true
+          items:
+            type: "string"
+            minLength: 3
 
 
     # RESPONSE OBJECT DEFINITIONS
