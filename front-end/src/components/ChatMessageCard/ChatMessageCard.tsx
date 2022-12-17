@@ -11,9 +11,6 @@ export function ChatMessageCard(props: IProps) {
     <div
       className="ChatMessageCard"
       style={{ float: props.isMine ? "right" : "left", clear: "both" }}
-    //   style={ props.isMine ?
-    //     { float: "right", clear: "both" } : { float: "left", clear: "both" }
-    //   }
     >
       { props.content }
     </div>
