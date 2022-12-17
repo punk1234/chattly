@@ -2,15 +2,31 @@ import axios, { AxiosInstance, Method } from "axios";
 import { appStorage, LocalStorage } from "./local-storage.helper";
 import config from "../config";
 
+/**
+ * @class ApiHandler
+ */
 class ApiHandler {
 
   private readonly instance: AxiosInstance;
 
+  /**
+   * @constructor
+   * @param {string} baseURL 
+   */
   constructor(baseURL: string) {
     // MAYBE INCLUDE SOME NECESSARY HEADERS HERE
     this.instance = axios.create({ baseURL });
   }
 
+  /**
+   * @method send
+   * @async
+   * @param {HttpMethod} method 
+   * @param {string} apiUrlPath 
+   * @param {Record<string, any>} payload 
+   * @param {object} authData 
+   * @returns {Promise<*>}
+   */
   async send(method: HttpMethod, apiUrlPath: string, payload?: Record<string, any>, authData?: object): Promise<any> {
     try {
       const response = await this.instance.request({
@@ -44,6 +60,13 @@ class ApiHandler {
     }
   }
 
+  /**
+   * @method sendWithAuthToken
+   * @param {HttpMethod} method 
+   * @param {string} apiUrlPath 
+   * @param {Record<string, any>} payload 
+   * @returns {Promise<*>}
+   */
   sendWithAuthToken(method: HttpMethod, apiUrlPath: string, payload?: Record<string, any>): Promise<any> {
     return this.send(
       method,
