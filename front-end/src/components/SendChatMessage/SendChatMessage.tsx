@@ -8,7 +8,7 @@ interface IProps {
   recipientType: ChatType;
 }
 
-function SendChatMessage(props: IProps) {
+export function SendChatMessage(props: IProps) {
   const [chatMsg, setChatMsg] = useState("");
   const [infoMsg, setInfoMsg] = useState("");
 
@@ -44,5 +44,3 @@ function SendChatMessage(props: IProps) {
     </div>
   )
 }
-
-export default SendChatMessage;

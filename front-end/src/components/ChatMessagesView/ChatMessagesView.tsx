@@ -1,12 +1,13 @@
 import { ChatType } from "../../interfaces";
 import { ChatMessageCard } from "../ChatMessageCard/ChatMessageCard";
-import SendChatMessage from "../SendChatMessage/SendChatMessage";
+import { SendChatMessage } from "../SendChatMessage/SendChatMessage";
 import "./ChatMessagesView.css";
 
 interface IProps {
-  messages: Array<any> | null;
+  messages?: Array<any>;
   recipientID: string;
   chatType: ChatType;
+  // singleChatUsername?: string;
 }
 
 export function ChatMessagesView(props: IProps) {
@@ -16,12 +17,12 @@ export function ChatMessagesView(props: IProps) {
 
       <div className="ChatMessagesView__message_box">
         {
-          props.messages?.length ? props.messages.reverse().map((item, idx) => (
+          props.messages?.length ? props.messages.map((item, idx) => (
             <ChatMessageCard
               key={idx}
               isMine={true}
-              content={item.messages[0].content}
-              dateTime={item.messages[0].createdAt}
+              content={item.content}
+              dateTime={item.createdAt}
             />
           )) : "No Chat Selected!"
         }
