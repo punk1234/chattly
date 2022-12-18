@@ -1,4 +1,5 @@
 import { ChatMessageCard } from "../ChatMessageCard/ChatMessageCard";
+import SendChatMessage from "../SendChatMessage/SendChatMessage";
 import "./ChatMessagesView.css";
 
 interface IProps {
@@ -10,7 +11,7 @@ export function ChatMessagesView(props: IProps) {
     <div className="ChatMessagesView">
       <div>ChatMessagesView {/**JSON.stringify(props.messages)*/}</div>
 
-      <div>
+      <div className="ChatMessagesView__message_box">
         {
           props.messages?.length ? props.messages.reverse().map((item, idx) => (
             <ChatMessageCard
@@ -22,6 +23,10 @@ export function ChatMessagesView(props: IProps) {
           )) : "No Chat Selected!"
         }
       </div>
+
+      {/* <div className="ChatMessagesView__send_message_box" style={{ clear: "both" }}> */}
+        <SendChatMessage />
+      {/* </div> */}
     </div>
   )
 }

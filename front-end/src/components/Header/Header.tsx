@@ -2,6 +2,6 @@ import "./Header.css";
 
 export function Header() {
   return (
-    <div>Chattly</div>
+    <div className="Header">Chattly</div>
   )
 }

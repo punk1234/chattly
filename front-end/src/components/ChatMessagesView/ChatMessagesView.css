@@ -1,5 +1,11 @@
 .ChatMessagesView {
-  background-color: white;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(233, 89, 89);
   color: purple;
   padding: 0.25em;
+}
+
+.ChatMessagesView__message_box {
+  flex: 1;
 }
