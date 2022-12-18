@@ -12,7 +12,7 @@ import { BadRequestError, UnauthenticatedError } from "../exceptions";
 @Service()
 export class AuthService {
   // eslint-disable-next-line no-useless-constructor
-  constructor(@Inject() private userService: UserService) {}
+  constructor(@Inject() private readonly userService: UserService) {}
 
   /**
    * @method register

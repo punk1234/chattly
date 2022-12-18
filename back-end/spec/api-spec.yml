@@ -539,8 +539,8 @@ components:
           minLength: 1
         recipientID:
           type: "string"
-          format: "uuid"
-          description: "ID of the receiver, which can be for either SINGLE-CHAT or GROUP-CHAT"
+          minLength: 3
+          description: "Username of SINGLE-CHAT or ID of GROUP-CHAT"
         recipientType:
           $ref: "#/components/schemas/ChatType"
 
