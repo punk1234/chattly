@@ -13,20 +13,15 @@ export function Chat() {
   const [activeChatMessages, setActiveChatMessages] = useState<Array<any>>();
 
   // const CHATS_MAP: Record<string, Array<any>> = {};
-  // console.log("---", CHATS_MAP)
 
   useEffect(() => {
     chatsMessages?.forEach(chatWithMessages => {
       CHATS_MAP[chatWithMessages["id"]] = chatWithMessages["messages"].reverse();
     });
-    
-    console.log("CHATS_MAP", CHATS_MAP);
   }, [chatsMessages]);
 
   useEffect(() => {
-    console.log("CHATS_MAP", activeChat?.chatId);
     setActiveChatMessages(CHATS_MAP[activeChat?.chatId]);
-    console.log("@@@CRAZY!!!", CHATS_MAP[activeChat?.chatId]);
   }, [activeChat]);
 
   return (
