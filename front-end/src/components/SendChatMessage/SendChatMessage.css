@@ -1,0 +1,22 @@
+.SendChatMessage {
+  display: flex;
+  gap: 10px;
+  border: 1px solid green;
+}
+
+/* input[type="text"] {
+  font-size: 1.2rem;
+  flex: 1;
+} */
+
+textarea {
+  font-size: 1.2rem;
+  flex: 1;
+}
+
+button {
+  background-color: green;
+  border-style: none;
+  border-radius: 10%;
+  color: pink;
+}

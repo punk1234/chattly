@@ -1,4 +1,5 @@
 import { ChatMessageCard } from "../ChatMessageCard/ChatMessageCard";
+import SendChatMessage from "../SendChatMessage/SendChatMessage";
 import "./ChatMessagesView.css";
 
 interface IProps {
@@ -10,18 +11,24 @@ export function ChatMessagesView(props: IProps) {
     <div className="ChatMessagesView">
       <div>ChatMessagesView {/**JSON.stringify(props.messages)*/}</div>
 
-      <div>
-        {
-          props.messages?.length ? props.messages.reverse().map((item, idx) => (
-            <ChatMessageCard
-              key={idx}
-              isMine={true}
-              content={item.messages[0].content}
-              dateTime={item.messages[0].createdAt}
-            />
-          )) : "No Chat Selected!"
-        }
-      </div>
+      {/* <div className="ChatMessagesView__main"> */}
+        <div className="ChatMessagesView__message_box">
+          {
+            props.messages?.length ? props.messages.reverse().map((item, idx) => (
+              <ChatMessageCard
+                key={idx}
+                isMine={true}
+                content={item.messages[0].content}
+                dateTime={item.messages[0].createdAt}
+              />
+            )) : "No Chat Selected!"
+          }
+        </div>
+
+        <div className="ChatMessagesView__send_message_box" /**style={{ clear: "both" }}*/>
+          <SendChatMessage />
+        </div>
+      {/* </div> */}
     </div>
   )
 }
