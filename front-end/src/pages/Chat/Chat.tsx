@@ -1,10 +1,28 @@
 import "./Chat.css";
 import { ChatMessagesView, ChatsView, Header } from "../../components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+// NOTE: MOVING THIS OUT OF THE COMPONENT MADE IT WORK
+const CHATS_MAP: Record<string, Array<any>> = {};
 
 export function Chat() {
-  const [chatsMessages, setChatsMessages] = useState(null);
+  // THINKING: SHOULD GET CHATS-MESSAGES BE DONE HERE ? SINCE THIS HAPPENS ONCE
+  const [chatsMessages, setChatsMessages] = useState<Array<any>>();
+
   const [activeChat, setActiveChat] = useState<any>(null);
+  const [activeChatMessages, setActiveChatMessages] = useState<Array<any>>();
+
+  // const CHATS_MAP: Record<string, Array<any>> = {};
+
+  useEffect(() => {
+    chatsMessages?.forEach(chatWithMessages => {
+      CHATS_MAP[chatWithMessages["id"]] = chatWithMessages["messages"].reverse();
+    });
+  }, [chatsMessages]);
+
+  useEffect(() => {
+    setActiveChatMessages(CHATS_MAP[activeChat?.chatId]);
+  }, [activeChat]);
 
   return (
     <div className="Chat">
@@ -17,8 +35,8 @@ export function Chat() {
         />
 
         <ChatMessagesView
-          messages={chatsMessages}
-          recipientID={activeChat?.chatId}
+          messages={activeChatMessages}
+          recipientID={activeChat?.singleChatUsername || activeChat?.chatId}
           chatType={activeChat?.chatType}
         />
       </div>

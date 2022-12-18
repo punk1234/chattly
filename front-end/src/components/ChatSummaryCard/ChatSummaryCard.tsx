@@ -7,7 +7,8 @@ function ChatSummaryCard(props: IProps) {
   const onClickHandler = () => {
     props.onClickHandler({
       chatType: props.chatType,
-      chatId: (props.chatType === ChatType.S) ? props.title : props.chatId,
+      chatId: props.chatId,
+      singleChatUsername: (props.chatType === ChatType.S) ? props.title : undefined,
     });
   };
 

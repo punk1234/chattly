@@ -38,6 +38,7 @@ Chat app that includes both front-end & back-end implementation
 - Delete Chat Message (low priority)
 - Notfication settings
 - Seed SUPER-ADMIN
+- Notify of INTERNET-OFFLINE in front-end UI (so users can know they are offline & not receiving real-time messages)
 
 ## ADMIN
 - Get Platform Stats (including no. of users, active-users, inactive-users, chat groups, total messages for today & yesterday, users that logged in today)
