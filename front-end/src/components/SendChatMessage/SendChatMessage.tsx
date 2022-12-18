@@ -12,8 +12,6 @@ function SendChatMessage(props: IProps) {
   const [chatMsg, setChatMsg] = useState("");
   const [infoMsg, setInfoMsg] = useState("");
 
-  console.log(props);
-
   const handleSendMessage = async () => {
     const [success, data] = await apiHandler.sendWithAuthToken(
       "POST",
