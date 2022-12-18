@@ -85,7 +85,7 @@ export class ChatService {
     data.recipientType = data.recipientType || ChatType.S;
     console.log(username);
 
-    await this.chatConnectionService.checkThatChatConnectionExist(
+    const CONNECTION = await this.chatConnectionService.checkThatChatConnectionExist(
       username,
       data.recipientID,
       data.recipientType,
@@ -93,7 +93,7 @@ export class ChatService {
 
     const CHAT_MESSAGE = await this.chatMessageService.saveChatMessage(
       username,
-      data.recipientID,
+      data.recipientType === ChatType.S ? CONNECTION._id : data.recipientID,
       data.recipientType,
       data.content,
     );

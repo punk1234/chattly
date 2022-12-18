@@ -21,3 +21,7 @@ button {
   border-radius: 10%;
   color: pink;
 }
+
+button:hover {
+  background-color: rgb(5, 71, 5);
+}

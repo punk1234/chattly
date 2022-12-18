@@ -79,6 +79,7 @@ export class ChatConnectionService {
       return FOUND_CONNECTION;
     }
 
+    // IS IT BETTER TO USE `404` HERE ?
     throw new UnprocessableError("No Chat connection!");
   }
 

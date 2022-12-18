@@ -6,6 +6,7 @@ import "./ChatsView.css";
 
 interface IProps {
   setChatsMessagesHandler: Function;
+  setActiveChatHandler: Function;
 }
 
 export function ChatsView(props: IProps) {
@@ -53,6 +54,7 @@ export function ChatsView(props: IProps) {
             lastMessageAt={chat.lastMessageAt}
             chatType={chat.chatType}
             chatId={chat.chatId}
+            onClickHandler={props.setActiveChatHandler}
           />
         )): <div>No Chats!</div>
       }
