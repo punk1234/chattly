@@ -30,7 +30,7 @@ export function Login() {
 
     if(success) {
       handleSuccessfulLoginDataCapture(response);
-      navigate(("/chat"));
+      navigate(("/chats"));
     }
   };
 

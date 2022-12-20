@@ -101,7 +101,7 @@ export class ChatService {
     await this.updateChatLastMessageAt(
       data.recipientID,
       data.recipientType,
-      data.recipientType,
+      username,
       CHAT_MESSAGE,
     );
 
