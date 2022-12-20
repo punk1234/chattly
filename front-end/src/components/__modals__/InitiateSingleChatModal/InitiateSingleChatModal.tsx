@@ -36,10 +36,6 @@ export function InitiateSingleChatModal(props: IProps) {
       <div className="InitiateSingleChatModal__main" onClick={(e) => e.stopPropagation()}>
         <h1>Initiate Single Chat</h1>
 
-        {/* {
-          infoMsg && <div className="Login__info_msg">{infoMsg}</div>
-        } */}
-
         <InfoMsg content={infoMsg} />
 
         <form>
