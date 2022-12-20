@@ -53,7 +53,6 @@ export function Chat() {
         onCloseModalHandler={() => setShowCreateGroupChatModal(false)}
       />
 
-      {/* { "showInitiateSingleChatModal - " + showInitiateSingleChatModal } */}
       <InitiateSingleChatModal
         open={showInitiateSingleChatModal}
         onCloseModalHandler={() => setShowInitiateSingleChatModal(false)}
