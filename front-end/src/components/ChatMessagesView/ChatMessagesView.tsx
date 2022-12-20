@@ -7,7 +7,6 @@ interface IProps {
   messages?: Array<any>;
   recipientID: string;
   chatType: ChatType;
-  // singleChatUsername?: string;
 }
 
 export function ChatMessagesView(props: IProps) {

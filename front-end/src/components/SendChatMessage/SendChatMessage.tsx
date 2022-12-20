@@ -42,5 +42,5 @@ export function SendChatMessage(props: IProps) {
       
       <button onClick={handleSendMessage}>SEND</button>
     </div>
-  )
+  );
 }
