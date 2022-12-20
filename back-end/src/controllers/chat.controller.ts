@@ -10,10 +10,10 @@ import {
   InitiateSingleChatConnectionResponse,
   User,
 } from "../models";
-import { GroupChatService } from "../services/group-chat.service";
-import { ChatConnectionService } from "../services/chat-connection.service";
 import { IChat, IChatMessages } from "../interfaces";
+import { GroupChatService } from "../services/group-chat.service";
 import { ChatMessageService } from "../services/chat-message.service";
+import { ChatConnectionService } from "../services/chat-connection.service";
 
 @Service()
 @Controller()

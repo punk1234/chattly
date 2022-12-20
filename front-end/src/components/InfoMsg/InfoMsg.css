@@ -1,0 +1,7 @@
+.InfoMsg {
+  border-color: black;
+  background-color: orangered;
+  padding: 0.5em 1em;
+  border-radius: 0.75em;
+  margin: 0.5em 0;
+}

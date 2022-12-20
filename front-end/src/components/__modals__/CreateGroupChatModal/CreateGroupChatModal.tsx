@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { InfoMsg } from "../../InfoMsg/InfoMsg";
+import { apiHandler } from "../../../helpers";
 import "./CreateGroupChatModal.css";
 
 interface IProps {
@@ -7,6 +9,7 @@ interface IProps {
 }
 
 export function CreateGroupChatModal(props: IProps) {
+  const [infoMsg, setInfoMsg] = useState("");
   const [groupChatName, setGroupChatName] = useState<string>("");
   const [groupChatMember, setGroupChatMember] = useState<string>("");
 
@@ -14,10 +17,30 @@ export function CreateGroupChatModal(props: IProps) {
     props.onCloseModalHandler();
   }
 
+  const handleCreateGroupChat = async (event: React.MouseEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    const [success, data] = await apiHandler.sendWithAuthToken(
+      "POST",
+      "/me/group-chats",
+      { name: groupChatName, members: [groupChatMember] }
+    );
+  
+    success ?
+      setInfoMsg("Group chat created successfully!") :
+      setInfoMsg((data as any)?.message);
+  }
+
   return (
     (!props.open) ? <></> : <div className="CreateGroupChatModal" onClick={onCloseHandler}>
       <div className="CreateGroupChatModal__main" onClick={(e) => e.stopPropagation()}>
         <h1>Create Group Chat</h1>
+
+        {/* {
+          infoMsg && <div className="Login__info_msg">{infoMsg}</div>
+        } */}
+
+        <InfoMsg content={infoMsg} />
 
         <form>
           <label htmlFor="groupChatName">Group Chat Name</label>
@@ -37,7 +60,7 @@ export function CreateGroupChatModal(props: IProps) {
           <input
             type="submit"
             value="CREATE"
-            // onClick={handleCreateGroupChat}
+            onClick={handleCreateGroupChat}
             disabled={!groupChatName || !groupChatMember}
           />
         </form>
