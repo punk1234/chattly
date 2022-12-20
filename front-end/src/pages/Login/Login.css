@@ -6,6 +6,7 @@
     height: 100vh;
   }
   
+  /* BOTH LOGIN & SIGN-UP HAVE THIS STYLE (RE-FACTOR)*/
   form {
     display: grid;
     width: 100%;

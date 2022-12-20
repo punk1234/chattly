@@ -1,5 +1,5 @@
 import "./Chat.css";
-import { ChatMessagesView, ChatsView, Header } from "../../components";
+import { ChatMessagesView, ChatsView, CreateGroupChatModal, Header } from "../../components";
 import { useEffect, useState } from "react";
 
 // NOTE: MOVING THIS OUT OF THE COMPONENT MADE IT WORK
@@ -11,6 +11,8 @@ export function Chat() {
 
   const [activeChat, setActiveChat] = useState<any>(null);
   const [activeChatMessages, setActiveChatMessages] = useState<Array<any>>();
+
+  const [showCreateGroupChatModal, setShowCreateGroupChatModal] = useState<boolean>(false);
 
   // const CHATS_MAP: Record<string, Array<any>> = {};
 
@@ -26,7 +28,7 @@ export function Chat() {
 
   return (
     <div className="Chat">
-      <Header />
+      <Header onCreateGroupChatHandler={() => setShowCreateGroupChatModal(true)} />
 
       <div className="Chat__board">
         <ChatsView
@@ -40,6 +42,12 @@ export function Chat() {
           chatType={activeChat?.chatType}
         />
       </div>
+
+      {/* NOTE: CAN ALSO USE `open && <CreateGroupChatModal .../> component here. Might be cleaner`*/}
+      <CreateGroupChatModal
+        open={showCreateGroupChatModal}
+        onCloseModalHandler={() => setShowCreateGroupChatModal(false)}
+      />
     </div>
-  )
+  );
 };
