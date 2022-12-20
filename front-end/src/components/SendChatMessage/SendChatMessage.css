@@ -15,7 +15,7 @@ textarea {
   resize: none;
 }
 
-button {
+.SendChatMessage button {
   background-color: green;
   border-style: none;
   border-radius: 10%;
@@ -23,6 +23,6 @@ button {
   padding: 0 3em;
 }
 
-button:hover {
+.SendChatMessage button:hover {
   background-color: rgb(5, 71, 5);
 }

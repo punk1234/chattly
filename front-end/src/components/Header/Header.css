@@ -1,3 +1,13 @@
 .Header {
-  height: 40px;
+  /* height: 40px; */
+  padding: 0.5em;
+}
+
+.Header button {
+  float: right;
+  border-style: none;
+  border-radius: 5%;
+  padding: 0.25em 0.75em;
+  background-color: purple;
+  color: white;
 }
