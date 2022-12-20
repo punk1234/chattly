@@ -3,10 +3,10 @@ import { UserService } from "./user.service";
 import { ChatMessageService } from "./chat-message.service";
 import { IGroupChat } from "../database/types/group-chat.type";
 import GroupChatModel from "../database/models/group-chat.model";
-import { ChatType, CreateGroupChatDto, UpdateGroupChatDto } from "../models";
-import { BadRequestError, ConflictError, NotFoundError, UnprocessableError } from "../exceptions";
 import { ChatConnectionService } from "./chat-connection.service";
 import { UserIdentifier } from "../constants/user-identifier.const";
+import { ChatType, CreateGroupChatDto, UpdateGroupChatDto } from "../models";
+import { BadRequestError, ConflictError, NotFoundError, UnprocessableError } from "../exceptions";
 
 @Service()
 export class GroupChatService {
