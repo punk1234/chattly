@@ -8,4 +8,6 @@
 
 .ChatMessagesView__message_box {
   flex: 1;
+  /* max-height: 800px; */
+  overflow: scroll;
 }

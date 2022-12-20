@@ -1,6 +1,12 @@
 .ChatMessageCard {
+  max-width: 75%;
   padding: 0.5em;
   margin: 0.25em;
   border-radius: 0.25em;
   background-color: orange;
+}
+
+.ChatMessageCard__date_time {
+  font-size: 0.75em;
+  float: right;
 }
