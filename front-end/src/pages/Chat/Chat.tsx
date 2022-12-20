@@ -1,5 +1,5 @@
 import "./Chat.css";
-import { ChatMessagesView, ChatsView, CreateGroupChatModal, Header } from "../../components";
+import { ChatMessagesView, ChatsView, CreateGroupChatModal, Header, InitiateSingleChatModal } from "../../components";
 import { useEffect, useState } from "react";
 
 // NOTE: MOVING THIS OUT OF THE COMPONENT MADE IT WORK
@@ -13,6 +13,7 @@ export function Chat() {
   const [activeChatMessages, setActiveChatMessages] = useState<Array<any>>();
 
   const [showCreateGroupChatModal, setShowCreateGroupChatModal] = useState<boolean>(false);
+  const [showInitiateSingleChatModal, setShowInitiateSingleChatModal] = useState<boolean>(false);
 
   // const CHATS_MAP: Record<string, Array<any>> = {};
 
@@ -28,7 +29,10 @@ export function Chat() {
 
   return (
     <div className="Chat">
-      <Header onCreateGroupChatHandler={() => setShowCreateGroupChatModal(true)} />
+      <Header
+        onCreateGroupChatHandler={() => setShowCreateGroupChatModal(true)}
+        onInitiateSingleChatHandler={() => setShowInitiateSingleChatModal(true)}
+      />
 
       <div className="Chat__board">
         <ChatsView
@@ -47,6 +51,11 @@ export function Chat() {
       <CreateGroupChatModal
         open={showCreateGroupChatModal}
         onCloseModalHandler={() => setShowCreateGroupChatModal(false)}
+      />
+
+      <InitiateSingleChatModal
+        open={showInitiateSingleChatModal}
+        onCloseModalHandler={() => setShowInitiateSingleChatModal(false)}
       />
     </div>
   );

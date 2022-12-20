@@ -36,10 +36,6 @@ export function CreateGroupChatModal(props: IProps) {
       <div className="CreateGroupChatModal__main" onClick={(e) => e.stopPropagation()}>
         <h1>Create Group Chat</h1>
 
-        {/* {
-          infoMsg && <div className="Login__info_msg">{infoMsg}</div>
-        } */}
-
         <InfoMsg content={infoMsg} />
 
         <form>
