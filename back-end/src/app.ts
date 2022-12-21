@@ -118,7 +118,7 @@ export default class App {
   private enableWebSocket(): void {
     this.webSocketServer.on("connection", (ws: WebSocket, req: IncomingMessage) => {
       // MAYBE USE `if(!req.url) { ws.terminate() or ws.close() }`
-      
+
       const USERNAME: string = (req.url as string).substr(1);
       // PROBABLY CHECK THAT USER WITH USERNAME EXISTS!!!
 
