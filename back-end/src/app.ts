@@ -3,11 +3,11 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import mongoose from "mongoose";
-import { createServer, Server } from "http";
 import compression from "compression";
+import { IncomingMessage } from "http";
 import cookieParser from "cookie-parser";
 import express, { Application } from "express";
-import { AddressInfo, WebSocket as WsWebSocket, WebSocketServer } from "ws";
+import { AddressInfo, WebSocket, WebSocketServer, RawData } from "ws";
 
 import C from "./constants";
 import config from "./config";
@@ -48,7 +48,9 @@ export default class App {
     this.inProduction = process.env.NODE_ENV === C.Environment.PRODUCTION;
 
     this.webSocketServer = new WebSocketServer({ port: webSocketPort });
-    Logger.info(`WebSocket running on port ${(this.webSocketServer.address() as AddressInfo).port}`);
+    Logger.info(
+      `WebSocket running on port ${(this.webSocketServer.address() as AddressInfo).port}`,
+    );
   }
 
   /**
@@ -114,13 +116,16 @@ export default class App {
    * @instance
    */
   private enableWebSocket(): void {
-    this.webSocketServer.on("connection", (ws: WsWebSocket, req /**: IncomingMessage*/) => {
+    this.webSocketServer.on("connection", (ws: WebSocket, req: IncomingMessage) => {
+      // MAYBE USE `if(!req.url) { ws.terminate() or ws.close() }`
+      
+      const USERNAME: string = (req.url as string).substr(1);
+      // PROBABLY CHECK THAT USER WITH USERNAME EXISTS!!!
 
-      const USERNAME = (req.url as string).substr(1);
       webSocketManager.addConnection(USERNAME, ws);
 
-      ws.on("message", function message(data) {
-        console.log("Message Received: ", data.toString());
+      ws.on("message", function message(data: RawData) {
+        console.log("[Message Received] " + data.toString());
       });
     });
   }

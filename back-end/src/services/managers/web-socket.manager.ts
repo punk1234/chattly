@@ -3,7 +3,6 @@ import { Service } from "typedi";
 
 @Service()
 class WebSocketManager {
-
   private readonly usersToConnectionMap: Record<string, WebSocket> = {};
 
   addConnection(userId: string, ws: WebSocket): void {
@@ -19,7 +18,7 @@ class WebSocketManager {
   }
 
   sendGroupMessages(recipientIds: Array<string>, message: string): void {
-    for(const recipient of recipientIds) {
+    for (const recipient of recipientIds) {
       this.usersToConnectionMap[recipient].send(message);
     }
   }
@@ -27,7 +26,6 @@ class WebSocketManager {
   getConnectionsCount(): number {
     return Object.keys(this.usersToConnectionMap).length;
   }
-
 }
 
 export const webSocketManager = new WebSocketManager();
