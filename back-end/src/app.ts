@@ -3,9 +3,11 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import mongoose from "mongoose";
+import { createServer, Server } from "http";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import express, { Application } from "express";
+import { AddressInfo, WebSocket as WsWebSocket, WebSocketServer } from "ws";
 
 import C from "./constants";
 import config from "./config";
@@ -15,6 +17,7 @@ import { BadRequestError } from "./exceptions";
 import { Logger, LoggerStream } from "./helpers";
 import { IAppOptions, IDatabaseConnector } from "./interfaces";
 import MongoDbConnector from "./database/connectors/mongodb.connector";
+import { webSocketManager } from "./services/managers/web-socket.manager";
 
 /**
  * @class App
@@ -26,6 +29,7 @@ export default class App {
 
   options: IAppOptions;
   connection: any;
+  webSocketServer: WebSocketServer;
 
   protected mongoConnector!: IDatabaseConnector;
 
@@ -34,18 +38,23 @@ export default class App {
    *
    * @param {Application} engine
    * @param {number} port
+   * @param {number} webSocketPort
    * @param {IAppOptions} options
    */
-  constructor(engine: Application, port: number, options?: IAppOptions) {
+  constructor(engine: Application, port: number, webSocketPort: number, options?: IAppOptions) {
     this.engine = engine;
     this.port = port;
     this.options = options || {};
     this.inProduction = process.env.NODE_ENV === C.Environment.PRODUCTION;
+
+    this.webSocketServer = new WebSocketServer({ port: webSocketPort });
+    Logger.info(`WebSocket running on port ${(this.webSocketServer.address() as AddressInfo).port}`);
   }
 
   /**
    * @method setupDependencies
    * @async
+   * @instance
    */
   private async setupDependencies(): Promise<void> {
     this.mongoConnector = new MongoDbConnector(mongoose);
@@ -64,6 +73,7 @@ export default class App {
 
   /**
    * @method configure
+   * @instance
    */
   protected configure(): void {
     const {
@@ -92,13 +102,33 @@ export default class App {
     this.engine.use(express.urlencoded({ limit: requestSizeLimit, extended: urlEncodeExtended }));
     this.engine.use(morgan("combined", { stream: LoggerStream }));
 
+    this.enableWebSocket();
+
     RouteManager.installRoutes(this.engine);
 
     this.engine.use(errorHandler(errorOption?.includeStackTrace || !this.inProduction));
   }
 
   /**
+   * @method enableWebSocket
+   * @instance
+   */
+  private enableWebSocket(): void {
+    this.webSocketServer.on("connection", (ws: WsWebSocket, req /**: IncomingMessage*/) => {
+
+      const USERNAME = (req.url as string).substr(1);
+      webSocketManager.addConnection(USERNAME, ws);
+
+      ws.on("message", function message(data) {
+        console.log("Message Received: ", data.toString());
+      });
+    });
+  }
+
+  /**
    * @initialize
+   * @async
+   * @instance
    */
   async initialize(): Promise<void> {
     await this.setupDependencies();
@@ -108,6 +138,7 @@ export default class App {
 
   /**
    * @method run
+   * @instance
    */
   run(): void {
     this.connection = this.engine.listen(this.port, () => {
@@ -117,6 +148,7 @@ export default class App {
 
   /**
    * @method close
+   * @instance
    */
   close(): void {
     this.connection?.close();

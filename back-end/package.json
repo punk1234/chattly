@@ -26,6 +26,7 @@
     "@types/jsonwebtoken": "^8.5.9",
     "@types/morgan": "^1.9.3",
     "@types/supertest": "^2.0.12",
+    "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
@@ -53,6 +54,7 @@
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",
     "winston": "^3.8.2",
-    "winston-daily-rotate-file": "^4.7.1"
+    "winston-daily-rotate-file": "^4.7.1",
+    "ws": "^8.11.0"
   }
 }

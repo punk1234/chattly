@@ -7,6 +7,7 @@ const { env } = process;
 
 export default {
   PORT: Number(env.PORT || 8000),
+  WEB_SOCKET_PORT: Number(env.WEB_SOCKET_PORT || 8900),
   ENVIRONMENT: env.NODE_ENV || C.Environment.DEVELOPMENT,
   MONGODB_URL: env.MONGODB_URL || "",
   JWT_TOKEN_SECRET: env.JWT_TOKEN_SECRET || "",
