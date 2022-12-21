@@ -7,7 +7,7 @@ import config from "./config";
  ********************************************************/
 
 const main = async () => {
-  const app = new App(express(), Number(config.PORT));
+  const app = new App(express(), config.PORT, config.WEB_SOCKET_PORT);
   await app.initialize();
 
   app.checkDependencies();
