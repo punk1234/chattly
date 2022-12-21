@@ -8,6 +8,7 @@ import { ChatType, InitiateSingleChatConnectionDto, SendChatMessageDto } from ".
 import { IChatMessage } from "../database/types/chat-message.type";
 import { ChatConnectionService } from "./chat-connection.service";
 import { GroupChatService } from "./group-chat.service";
+import { webSocketManager } from "./managers/web-socket.manager";
 
 @Service()
 export class ChatService {
@@ -105,7 +106,28 @@ export class ChatService {
       CHAT_MESSAGE,
     );
 
+    await this.broadcastNewMessage(username, data);
+
     return CHAT_MESSAGE;
+  }
+
+  /**
+   * @method broadcastNewMessage
+   * @async
+   * @param {string} senderUsername
+   * @param {SendChatMessageDto} data
+   * @returns {Promise<void>}
+   */
+  private async broadcastNewMessage(
+    senderUsername: string,
+    data: SendChatMessageDto,
+  ): Promise<void> {
+    const OTHER_GROUP_MEMBERS_USERNAMES =
+      data.recipientType === ChatType.S
+        ? [data.recipientID]
+        : await this.chatConnectionService.getGroupChatMembers(data.recipientID, senderUsername);
+
+    webSocketManager.sendGroupMessages(OTHER_GROUP_MEMBERS_USERNAMES, data.content);
   }
 
   /**

@@ -4,6 +4,7 @@ import { ConflictError, UnprocessableError } from "../exceptions";
 import { IChatConnection } from "../database/types/chat-connection.type";
 import ChatConnectionModel from "../database/models/chat-connection.model";
 import { IChat } from "../interfaces";
+import { LeanDocument } from "mongoose";
 
 @Service()
 export class ChatConnectionService {
@@ -137,6 +138,27 @@ export class ChatConnectionService {
     }).select("connectOne -_id");
 
     return FOUND_CONNECTIONS;
+  }
+
+  /**
+   * @method getGroupChatConnections
+   * @async
+   * @param {string} chatGroupId
+   * @param {string} exclusionUsername
+   * @returns {Promise<Array<string>>}
+   */
+  async getGroupChatMembers(
+    chatGroupId: string,
+    exclusionUsername: string,
+  ): Promise<Array<string>> {
+    const GROUP_CHAT_USERNAMES = await ChatConnectionModel.find({
+      connectTwo: chatGroupId,
+      connectOne: { $ne: exclusionUsername },
+    })
+      .select("connectOne -_id")
+      .lean();
+
+    return GROUP_CHAT_USERNAMES.map((item: LeanDocument<IChatConnection>) => item.connectOne);
   }
 
   /**
