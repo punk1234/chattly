@@ -154,7 +154,9 @@ export class ChatConnectionService {
     const GROUP_CHAT_USERNAMES = await ChatConnectionModel.find({
       connectTwo: chatGroupId,
       connectOne: { $ne: exclusionUsername },
-    }).select("connectOne -_id").lean();
+    })
+      .select("connectOne -_id")
+      .lean();
 
     return GROUP_CHAT_USERNAMES.map((item: LeanDocument<IChatConnection>) => item.connectOne);
   }

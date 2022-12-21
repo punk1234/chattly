@@ -114,14 +114,18 @@ export class ChatService {
   /**
    * @method broadcastNewMessage
    * @async
-   * @param {string} senderUsername 
-   * @param {SendChatMessageDto} data 
+   * @param {string} senderUsername
+   * @param {SendChatMessageDto} data
    * @returns {Promise<void>}
    */
-  private async broadcastNewMessage(senderUsername: string, data: SendChatMessageDto): Promise<void> {
-    const OTHER_GROUP_MEMBERS_USERNAMES = data.recipientType === ChatType.S ?
-      [data.recipientID] :
-      (await this.chatConnectionService.getGroupChatMembers(data.recipientID, senderUsername));
+  private async broadcastNewMessage(
+    senderUsername: string,
+    data: SendChatMessageDto,
+  ): Promise<void> {
+    const OTHER_GROUP_MEMBERS_USERNAMES =
+      data.recipientType === ChatType.S
+        ? [data.recipientID]
+        : await this.chatConnectionService.getGroupChatMembers(data.recipientID, senderUsername);
 
     webSocketManager.sendGroupMessages(OTHER_GROUP_MEMBERS_USERNAMES, data.content);
   }
