@@ -23,7 +23,6 @@ export function Chat() {
   const [infoMsg, setInfoMsg] = useState("");
 
   // const CHATS_MAP: Record<string, Array<any>> = {};
-
   LATEST_CHATS.chats = chats;
 
   const onNewChatMessageHandler = (data: IRTNewMessagePayload) => {
