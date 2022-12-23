@@ -11,36 +11,6 @@ interface IProps {
 }
 
 export function ChatsView(props: IProps) {
-  // const [chats, setChats] = useState<Array<IChatSummary> | null>(null);
-
-  const fetchChatsFromApi = async () => {
-    // const [success, data] = await apiHandler.sendWithAuthToken(
-    //   "GET",
-    //   "/me/chats"
-    // );
-
-    // success ?
-    //   setChats(data.records) :
-    //   setInfoMsg((data as any)?.message);
-
-    // const entityIds = props.chats?.map((item: any) => item.chatId);
-    // const [msgSuccess, msgData] = await apiHandler.sendWithAuthToken(
-    //   "POST",
-    //   "/me/top-chats/messages",
-    //   { entityIds }
-    // );
-
-    // console.log(msgData);
-
-    // msgSuccess ?
-    //   props.setChatsMessagesHandler(msgData.records) :
-    //   setInfoMsg((msgData as any)?.message);
-  }
-
-  useEffect(() => {
-    fetchChatsFromApi();
-  }, []);
-  
   return (
     <div className="ChatsView">
       <div>ChatsView</div>
