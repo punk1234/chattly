@@ -5,49 +5,19 @@ import ChatSummaryCard from "../ChatSummaryCard/ChatSummaryCard";
 import "./ChatsView.css";
 
 interface IProps {
-  setChatsMessagesHandler: Function;
+  chats?: Array<IChatSummary>;
+  infoMsg: string;
   setActiveChatHandler: Function;
 }
 
 export function ChatsView(props: IProps) {
-  const [chats, setChats] = useState<Array<IChatSummary> | null>(null);
-  const [infoMsg, setInfoMsg] = useState("");
-
-  const fetchChatsFromApi = async () => {
-    const [success, data] = await apiHandler.sendWithAuthToken(
-      "GET",
-      "/me/chats"
-    );
-
-    success ?
-      setChats(data.records) :
-      setInfoMsg((data as any)?.message);
-
-    const entityIds = data.records?.map((item: any) => item.chatId);
-    const [msgSuccess, msgData] = await apiHandler.sendWithAuthToken(
-      "POST",
-      "/me/top-chats/messages",
-      { entityIds }
-    );
-
-    console.log(msgData);
-
-    msgSuccess ?
-      props.setChatsMessagesHandler(msgData.records) :
-      setInfoMsg((msgData as any)?.message);
-  }
-
-  useEffect(() => {
-    fetchChatsFromApi();
-  }, []);
-  
   return (
     <div className="ChatsView">
       <div>ChatsView</div>
 
-      { infoMsg && <div>{ infoMsg }</div> }
+      { props.infoMsg && <div>{ props.infoMsg }</div> }
 
-      { chats?.length ? chats.map((chat, idx) => (
+      { props.chats?.length ? props.chats.map((chat, idx) => (
           <ChatSummaryCard
             key={idx}
             title={chat.title}
