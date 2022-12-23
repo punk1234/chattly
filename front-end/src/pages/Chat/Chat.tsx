@@ -1,13 +1,18 @@
 import "./Chat.css";
 import { ChatMessagesView, ChatsView, CreateGroupChatModal, Header, InitiateSingleChatModal } from "../../components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { IChatSummary, IRTNewGroupChatPayload, IRTNewMessagePayload } from "../../interfaces";
+import { apiHandler, appStorage, LocalStorage, RealTimeEventRegistrar } from "../../helpers";
+import config from "../../config";
 
 // NOTE: MOVING THIS OUT OF THE COMPONENT MADE IT WORK
 const CHATS_MAP: Record<string, Array<any>> = {};
+const LATEST_CHATS: { chats: any } = { chats: undefined };
 
 export function Chat() {
   // THINKING: SHOULD GET CHATS-MESSAGES BE DONE HERE ? SINCE THIS HAPPENS ONCE
   const [chatsMessages, setChatsMessages] = useState<Array<any>>();
+  const [chats, setChats] = useState<Array<IChatSummary>>();
 
   const [activeChat, setActiveChat] = useState<any>(null);
   const [activeChatMessages, setActiveChatMessages] = useState<Array<any>>();
@@ -15,7 +20,95 @@ export function Chat() {
   const [showCreateGroupChatModal, setShowCreateGroupChatModal] = useState<boolean>(false);
   const [showInitiateSingleChatModal, setShowInitiateSingleChatModal] = useState<boolean>(false);
 
+  const [infoMsg, setInfoMsg] = useState("");
+
+  // const count = useRef(0);
+  let count: any[] = [];
+
   // const CHATS_MAP: Record<string, Array<any>> = {};
+
+  // const LATEST_CHATS = { chats };
+  LATEST_CHATS.chats = chats;
+
+  const onNewChatMessageHandler = (data: IRTNewMessagePayload) => {console.log("onNewChatMessageHandler", chats, count);//count.push(1)
+    // THIS HANDLES BOTH SINGLE & GROUP CHAT MESSAGES UPDATES
+    console.log(LATEST_CHATS.chats);
+    if(!LATEST_CHATS.chats?.length) {
+      return; // IGNORE FOR NOW
+    }
+
+    // UPDATE REFERENCED CHAT POSITION IN CHAT-LIST (PROBABLY GOING TO THE TOP OF CHATS)
+    const CHAT_INDEX = LATEST_CHATS.chats?.findIndex((item: IChatSummary) => item.chatId === data.chatId);
+    console.log("CHAT_INDEX", CHAT_INDEX)
+    const NEW_CHATS = [...LATEST_CHATS.chats];
+    const CHAT = NEW_CHATS.splice(CHAT_INDEX, 1)[0];
+
+    CHAT.lastMessageAt = data.messageAt;
+    setChats([ CHAT, ...NEW_CHATS ]); // PUSH ITEM INTO LIST
+
+    // UPDATE REFERENCED CHAT MESSAGES
+  };
+
+  const onNewGroupChatHandler = (data: IRTNewGroupChatPayload) => {};
+
+  try {
+    !chats?.length && RealTimeEventRegistrar.sync(
+      config.CHATTLY_WEBSOCKET_BASE_URL,
+      (appStorage.get(LocalStorage.USER_DATA_KEY) as any).username,
+      {
+        onNewChatMessageHandler,
+        onNewGroupChatHandler
+      }
+    );
+
+    // console.log("---> 0SEC(S)!!!");
+
+    // setTimeout(() => {
+    //   onNewChatMessageHandler({
+    //     chatId: "9de37e78-24a8-4910-a0b8-256a4d0a00dc",
+    //     message: "Hmmm, testing websocket from front-end...!",
+    //     messageAt: new Date().toISOString(),
+    //     sender: "abcd"
+    //   });
+    // }, 5000);
+      
+    // onNewChatMessageHandler({
+    //   chatId: "9de37e78-24a8-4910-a0b8-256a4d0a00dc",
+    //   message: "Hmmm, testing websocket from front-end...!",
+    //   messageAt: new Date().toISOString(),
+    //   sender: "abcd"
+    // });
+  } catch(err) {
+    console.error("Real-Time Functionality N/A. Kindly re-fresh page again!!!");
+  }
+
+  const fetchChatsFromApi = async () => {
+    const [success, data] = await apiHandler.sendWithAuthToken(
+      "GET",
+      "/me/chats"
+    );
+
+    success ?
+      setChats(data.records) :
+      setInfoMsg((data as any)?.message);
+
+    const entityIds = data.records?.map((item: any) => item.chatId);
+    const [msgSuccess, msgData] = await apiHandler.sendWithAuthToken(
+      "POST",
+      "/me/top-chats/messages",
+      { entityIds }
+    );
+  
+    console.log(msgData);
+
+    msgSuccess ?
+      setChatsMessages(msgData.records) :
+      setInfoMsg((msgData as any)?.message);
+  }
+
+  useEffect(() => {
+    fetchChatsFromApi();
+  }, []);
 
   useEffect(() => {
     chatsMessages?.forEach(chatWithMessages => {
@@ -36,7 +129,8 @@ export function Chat() {
 
       <div className="Chat__board">
         <ChatsView
-          setChatsMessagesHandler={setChatsMessages}
+          chats={chats}
+          infoMsg={infoMsg}
           setActiveChatHandler={setActiveChat}
         />
 
