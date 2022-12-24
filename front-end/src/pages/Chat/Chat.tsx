@@ -40,7 +40,7 @@ export function Chat() {
     CHAT.lastMessageAt = data.messageAt;
     setChats([ CHAT, ...NEW_CHATS ]); // PUSH ITEM INTO LIST
 
-    // UPDATE REFERENCED CHAT MESSAGES (HANDKE WHEN CHAT IS NOT IN MAP)
+    // UPDATE REFERENCED CHAT MESSAGES (HANDLE WHEN CHAT IS NOT IN MAP)
     const CHAT_MESSAGES = CHATS_MAP[CHAT.chatId];
     if(!CHATS_MAP) {
       return;
