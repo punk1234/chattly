@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { apiHandler } from "../../helpers";
 import { IChatSummary } from "../../interfaces";
 import ChatSummaryCard from "../ChatSummaryCard/ChatSummaryCard";
 import "./ChatsView.css";
