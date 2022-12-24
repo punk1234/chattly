@@ -20,7 +20,8 @@ class WebSocketManager {
   sendGroupMessages(recipientIds: Array<string>, message: string): void {
     for (const recipient of recipientIds) {
       // ONLY BROADCAST WHEN USER WEB-SOCKET EXISTS!
-      this.usersToConnectionMap[recipient].send(message);
+      const CONNECTION = this.usersToConnectionMap[recipient];
+      CONNECTION && CONNECTION.send(message);
     }
   }
 
