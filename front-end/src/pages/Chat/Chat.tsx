@@ -2,12 +2,12 @@ import "./Chat.css";
 import { useEffect, useState } from "react";
 import config from "../../config";
 import { apiHandler, appStorage, LocalStorage, RealTimeEventRegistrar } from "../../helpers";
-import { IChatSummary, IRTNewGroupChatPayload, IRTNewMessagePayload } from "../../interfaces";
+import { IChatMessage, IChatSummary, IRTNewGroupChatPayload, IRTNewMessagePayload } from "../../interfaces";
 import { ChatMessagesView, ChatsView, CreateGroupChatModal, Header, InitiateSingleChatModal } from "../../components";
 
 // NOTE: MOVING THIS OUT OF THE COMPONENT MADE IT WORK
-const CHATS_MAP: Record<string, Array<any>> = {};
-const LATEST_CHATS: { chats: any } = { chats: undefined };
+const CHATS_MAP: Record<string, Array<IChatMessage>> = {};
+const LATEST_CHATS: { chats?: IChatSummary[] } = { chats: undefined };
 
 export function Chat() {
   // THINKING: SHOULD GET CHATS-MESSAGES BE DONE HERE ? SINCE THIS HAPPENS ONCE
@@ -15,7 +15,7 @@ export function Chat() {
   const [chats, setChats] = useState<Array<IChatSummary>>();
 
   const [activeChat, setActiveChat] = useState<any>(null);
-  const [activeChatMessages, setActiveChatMessages] = useState<Array<any>>();
+  const [activeChatMessages, setActiveChatMessages] = useState<Array<IChatMessage>>();
 
   const [showCreateGroupChatModal, setShowCreateGroupChatModal] = useState<boolean>(false);
   const [showInitiateSingleChatModal, setShowInitiateSingleChatModal] = useState<boolean>(false);
@@ -32,7 +32,7 @@ export function Chat() {
     }
 
     // UPDATE REFERENCED CHAT POSITION IN CHAT-LIST (PROBABLY GOING TO THE TOP OF CHATS)
-    const CHAT_INDEX = LATEST_CHATS.chats?.findIndex((item: IChatSummary) => item.chatId === data.chatId);
+    const CHAT_INDEX = LATEST_CHATS.chats.findIndex((item: IChatSummary) => item.chatId === data.chatId);
     
     const NEW_CHATS = [...LATEST_CHATS.chats];
     const CHAT = NEW_CHATS.splice(CHAT_INDEX, 1)[0];
@@ -40,7 +40,19 @@ export function Chat() {
     CHAT.lastMessageAt = data.messageAt;
     setChats([ CHAT, ...NEW_CHATS ]); // PUSH ITEM INTO LIST
 
-    // UPDATE REFERENCED CHAT MESSAGES
+    // UPDATE REFERENCED CHAT MESSAGES (HANDLE WHEN CHAT IS NOT IN MAP)
+    const CHAT_MESSAGES = CHATS_MAP[CHAT.chatId];
+    if(!CHATS_MAP) {
+      return;
+    }
+
+    CHAT_MESSAGES.push({
+      from: data.sender,
+      content: data.message,
+      createdAt: data.messageAt
+    });
+
+    CHATS_MAP[CHAT.chatId] = CHAT_MESSAGES;
   };
 
   const onNewGroupChatHandler = (data: IRTNewGroupChatPayload) => {};

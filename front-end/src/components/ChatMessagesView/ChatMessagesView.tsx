@@ -1,10 +1,10 @@
-import { ChatType } from "../../interfaces";
+import { ChatType, IChatMessage } from "../../interfaces";
 import { ChatMessageCard } from "../ChatMessageCard/ChatMessageCard";
 import { SendChatMessage } from "../SendChatMessage/SendChatMessage";
 import "./ChatMessagesView.css";
 
 interface IProps {
-  messages?: Array<any>;
+  messages?: Array<IChatMessage>;
   recipientID: string;
   chatType: ChatType;
 }
@@ -19,7 +19,7 @@ export function ChatMessagesView(props: IProps) {
           props.messages?.length ? props.messages.map((item, idx) => (
             <ChatMessageCard
               key={idx}
-              isMine={true}
+              senderUsername={item.from}
               content={item.content}
               dateTime={item.createdAt}
             />
